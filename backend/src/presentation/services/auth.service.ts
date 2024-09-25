@@ -1,9 +1,7 @@
 import { bcryptAdapter, JwtAdapter } from "../../config";
 import { UserModel } from "../../data/mongo";
+import { LoginUserDto, RegisterUserDto, UserEntity } from "../../domain";
 import { CustomError } from "../../domain/errors/custom.error";
-import { RegisterUserDto } from "../../domain/dtos/auth/register-user.dto";
-import { LoginUserDto } from "../../domain/dtos/auth/login-user.dto";
-import { UserEntity } from "../../domain/entities/user.entity";
 
 export class AuthService { 
 

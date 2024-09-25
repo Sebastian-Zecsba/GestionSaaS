@@ -26,6 +26,5 @@ export class JwtAdapter {
             })
         })
     }
-
 }
 

@@ -13,10 +13,6 @@ const product = new mongoose.Schema({
         type: Number, 
         required: [true, 'Price is required'] 
     },
-    cost: {
-        type: Number,
-        required: [true, 'Cost is required']
-    },
     stock: {
         type: Number,
         required: [true, 'Satisfies is required']

@@ -4,6 +4,7 @@ export * from './dtos/category/category.dto'
 
 export * from './entities/user.entity'
 export * from './entities/category.entity'
+export * from './entities/product.entity'
 
 export * from './errors/custom.error'
 export * from './dtos/shared/pagination.dto'

@@ -1,5 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import AppLayout from './layouts/App.layout'
+import DashboardView from './views/DashboardView'
+import CategoriesView from './views/categories/CategoriesView'
 
 function Router() {
   return (
@@ -8,7 +10,8 @@ function Router() {
         
         <Route element={<AppLayout />}>
 
-          <Route path="/" element={<h1 className='text-2xl font-semibold'>Dashboard</h1>} />
+          <Route path="/" element={<DashboardView />} index />
+          <Route path="/categories" element={<CategoriesView />} />
 
         </Route>
 

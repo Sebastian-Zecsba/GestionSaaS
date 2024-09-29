@@ -10,19 +10,21 @@ const CreateCategory = () => {
     const navigate = useNavigate()
     const location = useLocation()
     const queryParams = new URLSearchParams(location.search)
-    const modalTask = queryParams.get('categoria')
-    const show = modalTask ? true : false
+    const modalCategory = queryParams.get('categoria')
+    const show = modalCategory ? true : false
     const dispatch = useDispatch()
 
-    const { register, handleSubmit } = useForm()
+    const { register, handleSubmit, reset } = useForm()
 
     const onSubmit = (data) => {
        dispatch(createCategoryThunk(data))
        navigate(location.pathname, { replace: false })
+       reset()
     }
 
     const closeModal = () => {
         navigate(location.pathname, { replace: true })
+        reset()
     }
 
     return (

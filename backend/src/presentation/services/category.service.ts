@@ -44,8 +44,8 @@ export class CategoryService{
             page: page,
             limit: limit,
             total: total,
-            next: `/api/categories?page=${(page + 1)}&limit=${limit}`,
-            prev:  (page - 1 > 0) ? `/api/categories?page=${(page - 1)}&limit=${limit}` : null,
+            next: `/categories?page=${(page + 1)}&limit=${limit}`,
+            prev:  (page - 1 > 0) ? `/categories?page=${(page - 1)}&limit=${limit}` : null,
             categories: categories.map(category => {
                 return { 
                     id: category.id,
@@ -59,5 +59,55 @@ export class CategoryService{
             throw CustomError.internalServer(`${error}`)            
         }
     }
+
+    async getCategoryByid(categoryId: string){
+        try {
+            const existCategory = await CategoryModel.findById(categoryId)
+            if(!existCategory) throw CustomError.badRequest('Category not found')
+
+            const { id, name, description } = CategoryEntity.fromObject(existCategory)
+            
+            return { id, name, description }
+
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)            
+        }
+    }
+
+    async deleteCategory(categoryId: string){
+
+        const existCategory = await CategoryModel.findById(categoryId)
+        if(!existCategory) throw CustomError.badRequest('Category already exist')
+
+            try {
+                await Promise.all([
+                    existCategory.deleteOne(),
+                    existCategory.save()
+                ])
+
+                return `Category has been deleted`
+            } catch (error) {
+                throw CustomError.internalServer(`${error}`)            
+            }
+    }
+
+    async updatedCategory(categoryDto: CategoryDto, categoryId: string){
+        
+        const existCategory = await CategoryModel.findById(categoryId)
+        if(!existCategory) throw CustomError.badRequest('Category already exist')
+
+        try {
+            const updateCategory = await CategoryModel.findOneAndUpdate({_id: categoryId}, categoryDto, {new: true})
+            if (!updateCategory) {
+                throw CustomError.badRequest('Update failed, product not found');
+            }
+
+            const { id, name, description } = CategoryEntity.fromObject(updateCategory)
+
+            return { id, name, description }
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)            
+        }
+    }   
 
 }

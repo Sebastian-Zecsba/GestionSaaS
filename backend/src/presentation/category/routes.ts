@@ -12,6 +12,10 @@ export class CategoryRoutes {
 
         router.post('/', [AuthMiddleware.validateJWT], controller.createCategory)
         router.get('/', [AuthMiddleware.validateJWT], controller.getCategories)
+        
+        router.get('/:id', [AuthMiddleware.validateJWT], controller.getCategoryById)
+        router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteCategoryById)
+        router.put('/:id', [AuthMiddleware.validateJWT], controller.updatedCategoryById)
 
 
         return router

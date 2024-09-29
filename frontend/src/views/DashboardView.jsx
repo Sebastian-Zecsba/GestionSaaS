@@ -16,12 +16,12 @@ const  DashboardView = () => {
     }, []);
 
     const Menus = [
-        { title: "Categorias", srcLogo: "categorias", src: "/categories", howMany: categoryInformation.categories?.length },
-        { title: "Productos", srcLogo: "productos", src: "/", howMany: categoryInformation.categories?.length },
-        { title: "Bogedas", srcLogo: "bodegas", src: "/", howMany: categoryInformation.categories?.length },
-        { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation.categories?.length },
-        { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation.categories?.length},
-        { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation.categories?.length },
+        { title: "Categorias", srcLogo: "categorias", src: "/categories", howMany: categoryInformation.categories.total },
+        { title: "Productos", srcLogo: "productos", src: "/", howMany: categoryInformation.categories.total },
+        { title: "Bogedas", srcLogo: "bodegas", src: "/", howMany: categoryInformation.categories.total },
+        { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation.categories.total },
+        { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation.categories.total},
+        { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation.categories.total },
       ];
 
   return (

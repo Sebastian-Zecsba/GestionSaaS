@@ -4,19 +4,25 @@ import axios from '../../utils/axios'
 
 export const categorySlice = createSlice({
   name: 'category',
-  initialState: { categories: [] },
+  initialState: { categories: [], categoryById: null },
   reducers: {
     setCategories: (state, { payload }) => {state.categories = payload},
-    addCategory: (state, { payload }) => {state.categories.categories.push(payload)}
+    setCategoryById: (state, { payload }) => {state.categoryById = payload}
   }
 })
 
-export const getCategoriesThunk = () => async(dispatch) => {
+export const getCategoriesThunk = (url = '/categories?page=1&limit=10') => async(dispatch) => {
     dispatch(genericRequestThunk(async () => {
-        const res = await axios.get('/categories')
-        console.log(res.data)
+        const res = await axios.get(url)
         dispatch(setCategories(res.data))
     }))
+}
+
+export const getCategoryById = (id) => (dispatch) => {
+  dispatch(genericRequestThunk(async () => {
+      const res = await axios.get(`/categories/${id}`)
+      dispatch(setCategoryById(res.data))
+  }))
 }
 
 export const createCategoryThunk = (category) => async(dispatch) => {
@@ -24,10 +30,23 @@ export const createCategoryThunk = (category) => async(dispatch) => {
         await axios.post('/categories', category)
         dispatch(getCategoriesThunk())
     }))
+}
 
+export const deleteCategoryById = (id) => async(dispatch) => {
+  dispatch(genericRequestThunk(async () => {
+      await axios.delete(`/categories/${id}`)
+      dispatch(getCategoriesThunk())
+  }))
+}
+
+export const upatedCategoryById = (info, id) => async(dispatch) => {
+  dispatch(genericRequestThunk(async () => {
+    await axios.put(`/categories/${id}`, info)
+    dispatch(getCategoriesThunk())
+  }))
 }
 
 
-export const { setCategories, addCategory } = categorySlice.actions
+export const { setCategories, setCategoryById } = categorySlice.actions
 
 export default categorySlice.reducer

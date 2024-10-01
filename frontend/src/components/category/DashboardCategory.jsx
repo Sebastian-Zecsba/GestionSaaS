@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteCategoryById, getCategoriesThunk } from "../../store/slices/category.slice";
 import { useNavigate } from "react-router-dom"
 import EditCategory from "./EditCategory";
+import CreateCategory from "./CreateCategory";
 
 
 const DashboardCategory = ({searchTerm}) => {
@@ -12,24 +13,25 @@ const DashboardCategory = ({searchTerm}) => {
 
   const [currentPage, setCurrentPage] = useState(1);
 
-  const fetchCategories = useCallback((pageUrl) => {
-    dispatch(getCategoriesThunk(pageUrl));
+  const fetchCategories = useCallback((page, searchTerm) => {
+    const pageUrl = `/categories?page=${page}&limit=10`;
+    dispatch(getCategoriesThunk(pageUrl, searchTerm));
   }, [dispatch]);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    fetchCategories(currentPage, searchTerm);
+  }, [fetchCategories, searchTerm]);
 
   const handleNextPage = () => {
     if (categoryInformation.categories.next) {
-      fetchCategories(categoryInformation.categories.next);
+      fetchCategories(currentPage + 1);
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
     if (categoryInformation.categories.prev) {
-      fetchCategories(categoryInformation.categories.prev);
+      fetchCategories(currentPage - 1);
       setCurrentPage(currentPage - 1);
     }
   };
@@ -41,8 +43,8 @@ const DashboardCategory = ({searchTerm}) => {
   const pages = Math.ceil(categoryInformation.categories.total / categoryInformation.categories.limit)
 
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md mt-10">
-      <h2 className="text-2xl font-bold mb-6">Lista de categorías</h2>
+    <div className="p-6 bg-white rounded-lg shadow-md mt-6">
+      <h2 className="text-3xl font-bold mb-6">Lista de categorías</h2>
 
       {filteredCategories?.length > 0 ? (
         <table className="w-full table-auto">
@@ -54,20 +56,20 @@ const DashboardCategory = ({searchTerm}) => {
             </tr>
           </thead>
           <tbody>
-            {filteredCategories.map((category, index) => (
-              <tr key={category.id} className="border-t">
-                <td className="py-4 font-semibold">{category.name}</td>
-                <td className="py-4">{category.description}</td>
-                <td className="py-4">
+            {filteredCategories.map((category) => (
+              <tr key={category.id} className="border-t hover:bg-slate-50">
+                <td className="py-3">{category.name}</td>
+                <td className="py-3">{category.description}</td>
+                <td className="py-3">
                   <button
                     onClick={() => navigate(`?editCategory=${category.id}`)}
-                    className="mr-3 text-blue-500 hover:text-blue-700"
+                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
                   >
                     Editar
                   </button>
                   <button
-                    onClick={() => dispatch(deleteCategoryById(category.id))}
-                    className="text-red-500 hover:text-red-700"
+                    onClick={() => dispatch(deleteCategoryById(category.id, currentPage))}
+                    className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
                   >
                     Eliminar
                   </button>
@@ -77,7 +79,14 @@ const DashboardCategory = ({searchTerm}) => {
           </tbody>
         </table>
       ) : (
-        <div>No categories available</div>
+        <div className="flex gap-10 py-4 items-center">
+          <h2 className="text-lg">No has creado alguna categoria, ¡crea una!</h2>
+          <button
+              type='button'
+              className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl p-[10px]'
+              onClick={() => navigate(location.pathname + '?categoria=true')}
+          > + Agregar Categoria </button>
+        </div>
       )}
 
       <div className="flex justify-between items-center mt-6">
@@ -102,7 +111,13 @@ const DashboardCategory = ({searchTerm}) => {
         </button>
       </div>
 
-      <EditCategory />
+      <EditCategory 
+        currentPage={currentPage}
+      />
+
+      <CreateCategory 
+        currentPage={currentPage}
+      />
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import CategoryForm from './CategoryForm'
 import { getCategoryById, upatedCategoryById } from '../../store/slices/category.slice'
 
-const EditCategory = () => {
+const EditCategory = ({currentPage}) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
@@ -41,7 +41,7 @@ const EditCategory = () => {
     }
 
     const handleUpdated = (data) => {
-        dispatch(upatedCategoryById(data, categoryId))
+        dispatch(upatedCategoryById(data, categoryId, currentPage))
         closeModal();
         reset()
     }
@@ -65,7 +65,7 @@ const EditCategory = () => {
 
                     <button
                         type="submit"
-                        className="w-full p-3 text-center text-white bg-black rounded-lg"
+                        className="w-full p-3 text-center text-white bg-blue-500 hover:bg-blue-700 rounded-lg"
                     >
                         Actualizar Categoria
                     </button>

@@ -5,23 +5,26 @@ import { Header } from '../components'
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesThunk } from '../store/slices/category.slice';
+import { getProductsThunk } from '../store/slices/product.slice';
 
 const  DashboardView = () => {
 
     const dispatch = useDispatch();
-    const categoryInformation = useSelector((state) => state.category);
+    const categoryInformation = useSelector((state) => state.category.categories.total);
+    const productInformation = useSelector((state) => state.product.arrayProducts.total);
   
     useEffect(() => {
       dispatch(getCategoriesThunk());
+      dispatch(getProductsThunk());
     }, []);
 
     const Menus = [
-        { title: "Categorias", srcLogo: "categorias", src: "/categories", howMany: categoryInformation.categories.total },
-        { title: "Productos", srcLogo: "productos", src: "/", howMany: categoryInformation.categories.total },
-        { title: "Bogedas", srcLogo: "bodegas", src: "/", howMany: categoryInformation.categories.total },
-        { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation.categories.total },
-        { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation.categories.total},
-        { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation.categories.total },
+        { title: "Categorias", srcLogo: "categorias", src: "/categorias", howMany: categoryInformation },
+        { title: "Productos", srcLogo: "productos", src: "/productos", howMany: productInformation },
+        { title: "Bogedas", srcLogo: "bodegas", src: "/", howMany: categoryInformation },
+        { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation },
+        { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation},
+        { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation },
       ];
 
   return (
@@ -34,7 +37,8 @@ const  DashboardView = () => {
         <main className='flex flex-wrap gap-8 mt-24 justify-evenly'>  
             {Menus.map((element, index) => (
                 <Link to={element.src} key={index}>
-                    <section className='bg-[#EDEDED] p-5 rounded-md w-96'>
+                    <section 
+                        className='bg-[#EDEDED] p-5 rounded-md w-96 shadow hover:shadow-lg transition ease-in-out hover:scale-105 duration-150'>
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-semibold'>{element.title}</h1>
                             <img src={`./src/assets/${element.srcLogo}.png`} className='w-10 h-10' />

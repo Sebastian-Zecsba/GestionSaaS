@@ -40,9 +40,9 @@ export const genericRequestThunk = (
     } catch (error) {
         dispatch(showNotification({
             message: notificationError || 'There was an error',
-            variant: "danger"
+            variant: "danger",
         }))
-        console.log(error);
+        console.log(error)
     } finally{
         dispatch(setIsLoading(false));
     }

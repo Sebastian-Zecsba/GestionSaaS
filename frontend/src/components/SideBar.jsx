@@ -7,8 +7,8 @@ const SideBar = () => {
   const [open, setOpen] = useState(true);
   const Menus = [
     { title: "Dashboard", srcLogo: "dashboard", src: "/" },
-    { title: "Categorias", srcLogo: "categorias", src: "/categories"},
-    { title: "Productos", srcLogo: "productos", src: "/" },
+    { title: "Categorias", srcLogo: "categorias", src: "/categorias"},
+    { title: "Productos", srcLogo: "productos", src: "/productos" },
     { title: "Bogedas", srcLogo: "bodegas", src: "/" },
     { title: "Inventario", srcLogo: "inventario", src: "/" },
     { title: "Proveedores", srcLogo: "proveedores", src: "/"},

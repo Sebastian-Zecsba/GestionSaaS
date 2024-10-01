@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { Header } from '../../components'
 import { useNavigate } from 'react-router-dom'
-import CreateCategory from '../../components/category/CreateCategory'
 import DashboardCategory from '../../components/category/DashboardCategory'
 const CategoriesView = () => {
 
@@ -16,13 +15,12 @@ const CategoriesView = () => {
                 <div>
                     <Header 
                         title="Categorias"
-                        show="true"
                     />
                 </div>  
                 <div className='ml-28 flex justify-center'>
                     <button
                         type='button'
-                        className='bg-black px-10 font-normal text-white rounded-[10px] text-xl'
+                        className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl'
                         onClick={() => navigate(location.pathname + '?categoria=true')}
                     > + Agregar Categoria </button>
                 </div>
@@ -45,8 +43,6 @@ const CategoriesView = () => {
                 searchTerm={searchTerm}
             />
         </main>
-        
-        <CreateCategory />
     </div>
   )
 }

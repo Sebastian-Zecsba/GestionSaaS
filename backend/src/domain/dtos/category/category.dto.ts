@@ -13,5 +13,4 @@ export class CategoryDto {
 
         return [undefined, new CategoryDto(name, description)]
     }
-
 }

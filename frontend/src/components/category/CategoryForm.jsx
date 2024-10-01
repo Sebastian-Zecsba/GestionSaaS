@@ -3,7 +3,7 @@ import React from 'react'
 const CategoryForm = ({register}) => {
   return (
     <div>
-        <div>
+        <div className='flex flex-col gap-3 my-6'>
             <label
                 className="font-normal text-2xl"
                 htmlFor="name"
@@ -16,7 +16,7 @@ const CategoryForm = ({register}) => {
                 {...register("name")}
             />
         </div>
-        <div>
+        <div className='flex flex-col gap-3 my-6'>
             <label
                 className="font-normal text-2xl"
                 htmlFor="description"
@@ -24,7 +24,7 @@ const CategoryForm = ({register}) => {
             <input
                 id="description"
                 type="text"
-                placeholder="Nombre de la categoria"
+                placeholder="Descripción de la categoria"
                 className="w-full p-3  border-gray-300 border"
                 {...register("description")}
             />

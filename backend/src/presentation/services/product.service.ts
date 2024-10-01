@@ -1,4 +1,4 @@
-import { ProductModel } from "../../data/mongo";
+import { CategoryModel, ProductModel } from "../../data/mongo";
 import { CustomError, PaginationDto, ProductEntity, UserEntity } from "../../domain";
 import { ProductDto } from "../../domain/dtos/product/product.dto";
 
@@ -23,28 +23,33 @@ export class ProductService {
     }
 
     async getProducts(paginationDto: PaginationDto){
-        const { page, limit } = paginationDto;
+        const { page, limit, searchTerm } = paginationDto;
+
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
 
         try {
             const [ total, products] = await Promise.all([
-                ProductModel.countDocuments(),
-                ProductModel.find()
+                ProductModel.countDocuments(query),
+                ProductModel.find(query)
                     .skip((page-1) * limit)
                     .limit(limit)
+                    .populate('category')
             ])
 
             return {
                 page: page,
                 limit: limit,
                 total: total,
-                next:  `/api/categories?page=${(page + 1)}&limit=${limit}`,
-                prev:  (page - 1 > 0) ? `/api/categories?page=${(page - 1)}&limit=${limit}` : null,
+                next: `/products?page=${(page + 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}`,
+                prev:  (page - 1 > 0) ? `/products?page=${(page - 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}` : null,
                 products: products.map(product => {
                     return {
+                        id: product.id,
                         name: product.name,
                         description: product.description,
                         price: product.price,
                         stock: product.stock,
+                        category: product.category ? product.category : null
                     }
                 })
             }
@@ -53,8 +58,23 @@ export class ProductService {
         }
     }
 
-    async deleteProduct(categoryId: string){
-        const findProductById = await ProductModel.findById(categoryId)
+    async getProductById(productId: string){
+
+        try {    
+            const findProductById = await ProductModel.findById(productId)
+            if(!findProductById) throw CustomError.badRequest('Producty not found')
+
+            const { id, name, description, price, stock, category } = ProductEntity.fromObject(findProductById)
+            return { id, name, description, price, stock, category: category ? category : null }
+
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)
+        }
+
+    }
+
+    async deleteProduct(productId: string){
+        const findProductById = await ProductModel.findById(productId)
         if(!findProductById) throw CustomError.badRequest('Product not found')
 
         try {
@@ -71,12 +91,17 @@ export class ProductService {
         }
     }
 
-    async updateProduct(productDto: ProductDto, idProduct: string){
-        const findProductById = await ProductModel.findById(idProduct)
+    async updateProduct(productDto: ProductDto, productId: string){
+        const findProductById = await ProductModel.findById(productId)
         if(!findProductById) throw CustomError.badRequest('Product not found')
 
+        if (productDto.category) {
+            const categoryExists = await CategoryModel.findById(productDto.category);
+            if (!categoryExists) throw CustomError.badRequest('La categoría no existe');
+        }
+
         try {
-            const updateProduct = await ProductModel.findOneAndUpdate({_id: idProduct}, productDto, {new: true} ).populate('user').populate('category')
+            const updateProduct = await ProductModel.findOneAndUpdate({_id: productId}, productDto, {new: true} ).populate('user').populate('category')
             if (!updateProduct) {
                 throw CustomError.badRequest('Update failed, product not found');
             }

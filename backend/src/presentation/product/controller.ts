@@ -27,11 +27,21 @@ export class ProductController {
     }
 
     getProduct = async(req: Request, res: Response) => {
-        const { page = 1, limit = 10} = req.query;
-        const [ error, paginationDto] = PaginationDto.create(+page, +limit)
+        const { page = 1, limit = 10, searchTerm} = req.query;
+        const searchQuery = typeof searchTerm === 'string' ? searchTerm : undefined;
+
+        const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})
 
         this.productService.getProducts(paginationDto!)
+            .then((products) => res.status(201).json(products))
+            .catch(error => this.handleError(error, res))
+    }
+
+    getProductById = async(req: Request, res: Response) => {
+        const { id } = req.params;
+
+        this.productService.getProductById(id!)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }

@@ -1,4 +1,4 @@
-import { CategoryModel } from "../../data/mongo";
+import { CategoryModel, ProductModel } from "../../data/mongo";
 import { CategoryDto, CategoryEntity, CustomError, PaginationDto, UserEntity } from "../../domain";
 
 export class CategoryService{ 
@@ -30,29 +30,33 @@ export class CategoryService{
 
     async getCategories(paginationDto: PaginationDto){
         
-        const { page, limit } = paginationDto;
+        const { page, limit, searchTerm } = paginationDto;
+
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
 
         try {
-            const [ total, categories ] = await Promise.all([
-                CategoryModel.countDocuments(),
-                CategoryModel.find()
+            const [ total, categories, allCategories ] = await Promise.all([
+                CategoryModel.countDocuments(query),
+                CategoryModel.find(query)
                     .skip((page - 1) * limit)
-                    .limit(limit)
+                    .limit(limit),
+                CategoryModel.find()
             ])
         
         return {
             page: page,
             limit: limit,
             total: total,
-            next: `/categories?page=${(page + 1)}&limit=${limit}`,
-            prev:  (page - 1 > 0) ? `/categories?page=${(page - 1)}&limit=${limit}` : null,
+            next: `/categories?page=${(page + 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}`,
+            prev:  (page - 1 > 0) ? `/categories?page=${(page - 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}` : null,
             categories: categories.map(category => {
                 return { 
                     id: category.id,
                     name: category.name,
                     description: category.description
                 }
-            })
+            }),
+            allCategories: allCategories
         }
 
         } catch (error) {
@@ -82,7 +86,8 @@ export class CategoryService{
             try {
                 await Promise.all([
                     existCategory.deleteOne(),
-                    existCategory.save()
+                    existCategory.save(),
+                    ProductModel.updateMany({ category: categoryId }, { $unset: { category: "" } })
                 ])
 
                 return `Category has been deleted`

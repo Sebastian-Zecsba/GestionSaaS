@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit'
 import { genericRequestThunk } from './app.slice'
 import axios from '../../utils/axios'
 
+
 export const categorySlice = createSlice({
   name: 'category',
   initialState: { categories: [], categoryById: null },
@@ -11,9 +12,10 @@ export const categorySlice = createSlice({
   }
 })
 
-export const getCategoriesThunk = (url = '/categories?page=1&limit=10') => async(dispatch) => {
+export const getCategoriesThunk = (url = '/categories', searchTerm = '') => (dispatch) => {
     dispatch(genericRequestThunk(async () => {
-        const res = await axios.get(url)
+        const query = searchTerm ? `${url}&searchTerm=${searchTerm}` : url
+        const res = await axios.get(query)
         dispatch(setCategories(res.data))
     }))
 }
@@ -25,24 +27,27 @@ export const getCategoryById = (id) => (dispatch) => {
   }))
 }
 
-export const createCategoryThunk = (category) => async(dispatch) => {
-    dispatch(genericRequestThunk(async () => {
+export const createCategoryThunk = (category, currentPage) => async(dispatch) => {
+      dispatch(genericRequestThunk(async () => {
         await axios.post('/categories', category)
-        dispatch(getCategoriesThunk())
-    }))
+        const pageUrl = `/categories?page=${currentPage}&limit=10`;
+        dispatch(getCategoriesThunk(pageUrl))
+      }))
 }
 
-export const deleteCategoryById = (id) => async(dispatch) => {
+export const deleteCategoryById = (id, currentPage) => async(dispatch) => {
   dispatch(genericRequestThunk(async () => {
       await axios.delete(`/categories/${id}`)
-      dispatch(getCategoriesThunk())
+      const pageUrl = `/categories?page=${currentPage}&limit=10`;
+      dispatch(getCategoriesThunk(pageUrl))
   }))
 }
 
-export const upatedCategoryById = (info, id) => async(dispatch) => {
+export const upatedCategoryById = (info, id, currentPage) => async(dispatch) => {
   dispatch(genericRequestThunk(async () => {
-    await axios.put(`/categories/${id}`, info)
-    dispatch(getCategoriesThunk())
+      await axios.put(`/categories/${id}`, info)
+      const pageUrl = `/categories?page=${currentPage}&limit=10`;
+      dispatch(getCategoriesThunk(pageUrl))
   }))
 }
 

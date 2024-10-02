@@ -5,9 +5,9 @@ import axios from '../../utils/axios'
 
 export const categorySlice = createSlice({
   name: 'category',
-  initialState: { categories: [], categoryById: null },
+  initialState: { data: [], categoryById: null },
   reducers: {
-    setCategories: (state, { payload }) => {state.categories = payload},
+    setCategories: (state, { payload }) => {state.data = payload},
     setCategoryById: (state, { payload }) => {state.categoryById = payload}
   }
 })

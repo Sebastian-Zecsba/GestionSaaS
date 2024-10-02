@@ -13,14 +13,9 @@ const product = new mongoose.Schema({
         type: Number, 
         required: [true, 'Price is required'] 
     },
-    stock: {
-        type: Number,
-        required: [true, 'Satisfies is required']
-    }, 
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Category',
-        required: [true, 'Category is required']
+        ref: 'Category'
     },
     user: {
         type: Schema.Types.ObjectId,

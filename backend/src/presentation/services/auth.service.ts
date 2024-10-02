@@ -9,7 +9,7 @@ export class AuthService {
 
     public async registerUser(registerUserDto: RegisterUserDto) { 
         const existUser = await UserModel.findOne({email: registerUserDto.email})
-        if(existUser) throw CustomError.badRequest('Email already exist')
+        if(existUser) throw CustomError.badRequest('Correo electronico ya registrado')
 
         try {
             
@@ -31,10 +31,10 @@ export class AuthService {
 
     public async loginUser(loginUserDto: LoginUserDto) { 
         const findByEmail = await UserModel.findOne({email: loginUserDto.email})
-        if(!findByEmail) throw CustomError.badRequest('Email already exist')
+        if(!findByEmail) throw CustomError.badRequest('Correo electronico no registrado')
 
         const isMatch = bcryptAdapter.compare(loginUserDto.password, findByEmail.password)
-        if(!isMatch) throw CustomError.badRequest('Password is not valid')
+        if(!isMatch) throw CustomError.badRequest('Contraseña no válida')
 
         const { password, ...userEntity} = UserEntity.fromObject(findByEmail)
         

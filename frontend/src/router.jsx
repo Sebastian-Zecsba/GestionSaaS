@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './layouts/App.layout';
 import { CategoriesView, DashboardView, ProductsView } from './views';
+import Notification from './components/Notification';
 
 function Router() {
   return (
@@ -12,6 +13,8 @@ function Router() {
           <Route path="/productos" element={<ProductsView />} />
         </Route>
       </Routes>
+
+      <Notification />
     </BrowserRouter>
   );
 }

@@ -1,6 +1,5 @@
 import { CategoryModel, ProductModel } from "../../data/mongo";
-import { CustomError, PaginationDto, ProductEntity, UserEntity } from "../../domain";
-import { ProductDto } from "../../domain/dtos/product/product.dto";
+import { CustomError, PaginationDto, ProductEntity, UserEntity, ProductDto } from "../../domain";
 
 export class ProductService {
 
@@ -9,7 +8,7 @@ export class ProductService {
     async createProduct(productDto: ProductDto, user: UserEntity){
 
         const productExist = await ProductModel.findOne({name: productDto.name});
-        if(productExist) throw CustomError.badRequest('Category already exist')
+        if(productExist) throw CustomError.badRequest('Este roducto ya existe')
 
         try {
             const product = await ProductModel.create(productDto)
@@ -48,7 +47,6 @@ export class ProductService {
                         name: product.name,
                         description: product.description,
                         price: product.price,
-                        stock: product.stock,
                         category: product.category ? product.category : null
                     }
                 })
@@ -62,10 +60,10 @@ export class ProductService {
 
         try {    
             const findProductById = await ProductModel.findById(productId)
-            if(!findProductById) throw CustomError.badRequest('Producty not found')
+            if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
-            const { id, name, description, price, stock, category } = ProductEntity.fromObject(findProductById)
-            return { id, name, description, price, stock, category: category ? category : null }
+            const { id, name, description, price, category } = ProductEntity.fromObject(findProductById)
+            return { id, name, description, price, category: category ? category : null }
 
         } catch (error) {
             throw CustomError.internalServer(`${error}`)
@@ -75,7 +73,7 @@ export class ProductService {
 
     async deleteProduct(productId: string){
         const findProductById = await ProductModel.findById(productId)
-        if(!findProductById) throw CustomError.badRequest('Product not found')
+        if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
         try {
             
@@ -93,7 +91,7 @@ export class ProductService {
 
     async updateProduct(productDto: ProductDto, productId: string){
         const findProductById = await ProductModel.findById(productId)
-        if(!findProductById) throw CustomError.badRequest('Product not found')
+        if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
         if (productDto.category) {
             const categoryExists = await CategoryModel.findById(productDto.category);
@@ -101,10 +99,12 @@ export class ProductService {
         }
 
         try {
-            const updateProduct = await ProductModel.findOneAndUpdate({_id: productId}, productDto, {new: true} ).populate('user').populate('category')
-            if (!updateProduct) {
-                throw CustomError.badRequest('Update failed, product not found');
-            }
+            const updateProduct = await ProductModel.findOneAndUpdate({_id: productId}, productDto, {new: true} )
+                .populate('user')
+                .populate('category')
+
+            if (!updateProduct) {throw CustomError.badRequest('Actualización fallida, producto no encontrado')}
+
             const productEntity = ProductEntity.fromObject(updateProduct)
             return productEntity
         } catch (error) {

@@ -4,10 +4,10 @@ import axios from "../../utils/axios";
 
 export const productSlice = createSlice({
   name: "product",
-  initialState: { arrayProducts: [], productById: null },
+  initialState: { data: [], productById: null },
   reducers: {
     setProducts: (state, { payload }) => {
-        state.arrayProducts = payload
+        state.data = payload
     },
     setProductById: (state, { payload }) => {state.productById = payload;},
   },

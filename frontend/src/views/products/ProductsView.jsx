@@ -1,11 +1,10 @@
 import React, { useState } from 'react'
 import { Header } from '../../components'
-import { useNavigate } from 'react-router-dom'
 import DashboardProduct from '../../components/product/DashboardProduct'
+import ButtonCreate from '../../components/ButtonCreate'
 
 const ProductsView = () => {
 
-  const navigate = useNavigate()
   const [searchTerm, setSearchTerm ] = useState('')
 
   return (
@@ -18,11 +17,10 @@ const ProductsView = () => {
                 />
             </div>  
             <div className='ml-28 flex justify-center'>
-                <button
-                    type='button'
-                    className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl'
-                    onClick={() => navigate(location.pathname + '?producto=true')}
-                > + Agregar Producto </button>
+                <ButtonCreate 
+                    navigatePath="?producto=true"
+                    messageBody={"+ Agregar Producto"}
+                />
             </div>
         </section>
 

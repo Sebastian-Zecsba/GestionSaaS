@@ -10,11 +10,11 @@ export class RegisterUserDto {
     static create(object: {[key:string]:any}) : [string?, RegisterUserDto?]{
         const { name, email, password} = object;
 
-        if(!name ) return ['Missing name']
-        if(!email ) return ['Missing email']
-        if(!regularExps.email.test(email)) return ['Email is not vaild']
-        if(!password ) return ['Missing password']
-        if( password.length < 6 ) return ['Password to short']
+        if(!name ) return ['Nombre es obligatorio']
+        if(!email ) return ['Correo es obligatorio']
+        if(!regularExps.email.test(email)) return ['Email invalido']
+        if(!password ) return ['Contraseña es obligatoria']
+        if( password.length < 6 ) return ['Contraseña debe tener al menos 6 caracteres']
 
         return [undefined, new RegisterUserDto(name, email, password)]
 

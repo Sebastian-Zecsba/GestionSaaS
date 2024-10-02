@@ -4,7 +4,8 @@ import { deleteCategoryById, getCategoriesThunk } from "../../store/slices/categ
 import { useNavigate } from "react-router-dom"
 import EditCategory from "./EditCategory";
 import CreateCategory from "./CreateCategory";
-
+import Pagination from "../Pagination";
+import ButtonCreate from "../ButtonCreate";
 
 const DashboardCategory = ({searchTerm}) => {
   const navigate = useNavigate()
@@ -23,24 +24,24 @@ const DashboardCategory = ({searchTerm}) => {
   }, [fetchCategories, searchTerm]);
 
   const handleNextPage = () => {
-    if (categoryInformation.categories.next) {
+    if (categoryInformation) {
       fetchCategories(currentPage + 1);
       setCurrentPage(currentPage + 1);
     }
   };
 
   const handlePrevPage = () => {
-    if (categoryInformation.categories.prev) {
+    if (categoryInformation) {
       fetchCategories(currentPage - 1);
       setCurrentPage(currentPage - 1);
     }
   };
 
-  const filteredCategories = categoryInformation.categories.categories?.filter(category => 
+  const filteredCategories = categoryInformation.data.categories?.filter((category) =>
     category.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const pages = Math.ceil(categoryInformation.categories.total / categoryInformation.categories.limit)
+  const pages = Math.ceil(categoryInformation.data.total / categoryInformation.data.limit)
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-6">
@@ -80,36 +81,21 @@ const DashboardCategory = ({searchTerm}) => {
         </table>
       ) : (
         <div className="flex gap-10 py-4 items-center">
-          <h2 className="text-lg">No has creado alguna categoria, ¡crea una!</h2>
-          <button
-              type='button'
-              className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl p-[10px]'
-              onClick={() => navigate(location.pathname + '?categoria=true')}
-          > + Agregar Categoria </button>
+          <ButtonCreate 
+            messageHeader={"No has creado alguna categoria, ¡crea una!"}
+            navigatePath="?categoria=true"
+            messageBody={"+ Agregar Categoria"}
+          />
         </div>
       )}
 
-      <div className="flex justify-between items-center mt-6">
-        <button
-          onClick={handlePrevPage}
-          disabled={!categoryInformation.categories.prev}
-          className={`p-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${ !categoryInformation.categories.prev ? "opacity-50 cursor-not-allowed" : "" }`}
-        >
-          ⬅️ Anterior
-        </button>
-
-        <span className="text-lg">
-          Página {currentPage} de {pages}
-        </span>
-
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage > pages - 1}
-          className={`p-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${ currentPage > pages - 1 ? "opacity-50 cursor-not-allowed" : "" }`}
-        >
-          Siguiente ➡️
-        </button>
-      </div>
+      <Pagination
+        handlePrevPage={handlePrevPage}
+        handleNextPage={handleNextPage}
+        currentPage={currentPage}
+        pages={pages}
+        data={categoryInformation}
+      />
 
       <EditCategory 
         currentPage={currentPage}

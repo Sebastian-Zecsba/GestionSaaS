@@ -10,8 +10,8 @@ import { getProductsThunk } from '../store/slices/product.slice';
 const  DashboardView = () => {
 
     const dispatch = useDispatch();
-    const categoryInformation = useSelector((state) => state.category.categories.total);
-    const productInformation = useSelector((state) => state.product.arrayProducts.total);
+    const categoryInformation = useSelector((state) => state.category.data.total);
+    const productInformation = useSelector((state) => state.product.data.total);
   
     useEffect(() => {
       dispatch(getCategoriesThunk());

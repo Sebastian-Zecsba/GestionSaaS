@@ -1,10 +1,8 @@
 import React, { useState } from 'react'
 import { Header } from '../../components'
-import { useNavigate } from 'react-router-dom'
 import DashboardCategory from '../../components/category/DashboardCategory'
+import ButtonCreate from '../../components/ButtonCreate'
 const CategoriesView = () => {
-
-    const navigate = useNavigate()
 
     const [searchTerm, setSearchTerm ] = useState('')
 
@@ -18,11 +16,10 @@ const CategoriesView = () => {
                     />
                 </div>  
                 <div className='ml-28 flex justify-center'>
-                    <button
-                        type='button'
-                        className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl'
-                        onClick={() => navigate(location.pathname + '?categoria=true')}
-                    > + Agregar Categoria </button>
+                    <ButtonCreate        
+                        navigatePath="?categoria=true"
+                        messageBody={"+ Agregar Categoria"}
+                    />
                 </div>
             </section>
 

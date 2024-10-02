@@ -9,7 +9,14 @@ const ProductForm = ({register}) => {
         dispatch(getCategoriesThunk())
     }, [])
 
-    const categories = useSelector((state) => state.category.categories)
+    const categories = useSelector((state) => state.category.data)
+
+    const handleNumberChange = (e) => {
+        const value = e.target.value;
+        if (value < 0) {
+            e.target.value = 0;
+        }
+    };
 
   return (
     <div>
@@ -40,38 +47,24 @@ const ProductForm = ({register}) => {
             />
         </div>
         <div className='flex flex-col gap-3 my-6'>
-            <label
-                className="font-normal text-2xl"
-                htmlFor="price"
-            >Precio</label>
-            <input
-                id="price"
-                type="text"
-                placeholder="Precio"
-                className="w-full p-3  border-gray-300 border"
-                {...register("price")}
-            />
-        </div>
-        <div className='flex flex-col gap-3 my-6'>
-            <label
-                className="font-normal text-2xl"
-                htmlFor="stock"
-            >Cantidad</label>
-            <input
-                id="stock"
-                type="text"
-                placeholder="Cantidad"
-                className="w-full p-3  border-gray-300 border"
-                {...register("stock")}
-            />
-        </div>
+                <label className="font-normal text-2xl" htmlFor="price">Precio</label>
+                <input
+                    id="price"
+                    type="number"
+                    placeholder="Precio"
+                    className="w-full p-3 border-gray-300 border"
+                    {...register("price", { valueAsNumber: true })}
+                    min="0"
+                    onChange={handleNumberChange} 
+                />
+            </div>
         <div className='flex flex-col gap-3 my-6'>
             <label
                 className="font-normal text-2xl"
                 htmlFor="stock"
             >Categories</label>
             <select id="category" {...register("category")}>
-                <option value="select"> -- Selecciona un Categoria --</option>
+                <option value="seleccionar"> -- Selecciona un Categoria --</option>
                 {categories.allCategories?.map((category) => (
                     <option key={category.id} value={category.id} >{category.name}</option>
                 ))}

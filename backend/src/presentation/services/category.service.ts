@@ -8,7 +8,7 @@ export class CategoryService{
     async createCategoty(createCategory: CategoryDto, user: UserEntity){
 
         const existCategory = await CategoryModel.findOne({name: createCategory.name})
-        if(existCategory) throw CustomError.badRequest('Category already exist')
+        if(existCategory) throw CustomError.badRequest('Esta categoria ya existe')
         
         try {
             
@@ -67,7 +67,7 @@ export class CategoryService{
     async getCategoryByid(categoryId: string){
         try {
             const existCategory = await CategoryModel.findById(categoryId)
-            if(!existCategory) throw CustomError.badRequest('Category not found')
+            if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
             const { id, name, description } = CategoryEntity.fromObject(existCategory)
             
@@ -81,7 +81,7 @@ export class CategoryService{
     async deleteCategory(categoryId: string){
 
         const existCategory = await CategoryModel.findById(categoryId)
-        if(!existCategory) throw CustomError.badRequest('Category already exist')
+        if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
             try {
                 await Promise.all([
@@ -99,7 +99,7 @@ export class CategoryService{
     async updatedCategory(categoryDto: CategoryDto, categoryId: string){
         
         const existCategory = await CategoryModel.findById(categoryId)
-        if(!existCategory) throw CustomError.badRequest('Category already exist')
+        if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
         try {
             const updateCategory = await CategoryModel.findOneAndUpdate({_id: categoryId}, categoryDto, {new: true})

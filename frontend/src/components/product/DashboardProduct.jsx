@@ -4,6 +4,8 @@ import { deleteProductThunk, getProductsThunk } from '../../store/slices/product
 import CreateProduct from './CreateProduct'
 import { useNavigate } from 'react-router-dom'
 import EditProduct from './EditProduct'
+import Pagination from '../Pagination'
+import ButtonCreate from '../ButtonCreate'
 
 const DashboardProduct = ({searchTerm}) => {
   const navigate = useNavigate()
@@ -35,9 +37,9 @@ const DashboardProduct = ({searchTerm}) => {
     }
   };
 
-  const productsFiltered = products.arrayProducts.products?.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
+  const productsFiltered = products.data.products?.filter(product => product.name.toLowerCase().includes(searchTerm.toLowerCase()))
 
-  const pages = Math.ceil(products.arrayProducts.total / products.arrayProducts.limit)
+  const pages = Math.ceil(products.data.total / products.data.limit)
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-6">
@@ -50,7 +52,6 @@ const DashboardProduct = ({searchTerm}) => {
                   <th className='pb-4'>Nombre</th>
                   <th className='pb-4'>Descripción</th>
                   <th className='pb-4'>Precio</th>
-                  <th className='pb-4'>Cantidad</th>
                   <th className='pb-4'>Categoria</th>
                   <th className="pb-4">Acciones</th>
               </tr>
@@ -60,8 +61,7 @@ const DashboardProduct = ({searchTerm}) => {
                 <tr key={product.id} className="border-t hover:bg-slate-50">
                   <td className="py-3">{product.name}</td>
                   <td className="py-3">{product.description}</td>
-                  <td className="py-3">{product.price}</td>
-                  <td className="py-3">{product.stock}</td>
+                  <td className="py-3">{product.price.toLocaleString('es-ES')}</td>
                   <td className="py-3">{product.category ? product.category.name : <p className='font-semibold'>Categoria eliminada</p>}</td>
                   <td>
                     <button
@@ -82,36 +82,21 @@ const DashboardProduct = ({searchTerm}) => {
           </table>
         ) : (
           <div className="flex gap-10 py-4 items-center">
-            <h2 className="text-lg">No has creado algun producto, ¡crea uno!</h2>
-            <button
-                type='button'
-                className='bg-blue-500 hover:bg-blue-700 px-10 font-normal text-white rounded-[10px] text-xl p-[10px]'
-                onClick={() => navigate(location.pathname + '?producto=true')}
-            > + Agregar Categoria </button>
+            <ButtonCreate 
+              messageHeader={"No has creado algun producto, ¡crea uno!"}
+              navigatePath="?producto=true"
+              messageBody={"+ Agregar Producto"}
+            />
           </div>
         )}
 
-      <div className="flex justify-between items-center mt-6">
-        <button
-          onClick={handlePrevPage}
-          disabled={!products.arrayProducts.prev}
-          className={`p-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${ !products.arrayProducts.prev ? "opacity-50 cursor-not-allowed" : "" }`}
-        >
-          ⬅️ Anterior
-        </button>
-
-        <span className="text-lg">
-          Página {currentPage} de {pages}
-        </span>
-
-        <button
-          onClick={handleNextPage}
-          disabled={currentPage > pages - 1}
-          className={`p-2 rounded bg-blue-500 text-white hover:bg-blue-700 ${ currentPage > pages - 1 ? "opacity-50 cursor-not-allowed" : "" }`}
-        >
-          Siguiente ➡️
-        </button>
-      </div>
+        <Pagination 
+          handlePrevPage={handlePrevPage}
+          handleNextPage={handleNextPage}
+          currentPage={currentPage}
+          pages={pages}
+          data={products}
+        />
 
     <CreateProduct 
       currentPage={currentPage}

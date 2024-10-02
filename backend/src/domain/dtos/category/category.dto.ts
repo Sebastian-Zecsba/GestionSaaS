@@ -8,8 +8,8 @@ export class CategoryDto {
 
         const { name, description } = object;
 
-        if(!name) return ['Missing category name']
-        if(!description) return ['Missing category description']
+        if(!name) return ['Nombre de la catergoria es obligatorio']
+        if(!description) return ['Descripción de la categoria es obligatorio']
 
         return [undefined, new CategoryDto(name, description)]
     }

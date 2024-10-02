@@ -36,15 +36,23 @@ export const genericRequestThunk = (
                 message: notificationMessage,
                 variant: "success"
             }))
+
+        setTimeout(() => {
+            dispatch(closeNotification());
+        }, 5000); 
+        
         return res;
     } catch (error) {
         dispatch(showNotification({
-            message: notificationError || 'There was an error',
+            message: error.response.data.error || 'There was an error',
             variant: "danger",
         }))
-        console.log(error)
-    } finally{
-        dispatch(setIsLoading(false));
+
+        setTimeout(() => {
+            dispatch(closeNotification());
+        }, 5000); 
+
+        console.log(error);
     }
 }
 

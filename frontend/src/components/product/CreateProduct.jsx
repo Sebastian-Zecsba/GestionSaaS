@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form'
 import ProductForm from './ProductForm'
 import { useDispatch } from 'react-redux'
 import { createProductThunk } from '../../store/slices/product.slice'
+import { showNotification } from '../../store/slices/app.slice'
 
 const CreateProduct = ({currentPage}) => {
     const navigate = useNavigate()
@@ -17,7 +18,6 @@ const CreateProduct = ({currentPage}) => {
     const {handleSubmit, register, reset } = useForm()
 
     const handleCreate = (data) => {
-        if(data.category === 'select') throw console.log('Debes seleccionar una categoria valida')
         dispatch(createProductThunk(data, currentPage))
         navigate(location.pathname, { replace: false })
         reset()

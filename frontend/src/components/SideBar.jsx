@@ -9,7 +9,7 @@ const SideBar = () => {
     { title: "Dashboard", srcLogo: "dashboard", src: "/" },
     { title: "Categorias", srcLogo: "categorias", src: "/categorias"},
     { title: "Productos", srcLogo: "productos", src: "/productos" },
-    { title: "Bogedas", srcLogo: "bodegas", src: "/" },
+    { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas" },
     { title: "Inventario", srcLogo: "inventario", src: "/" },
     { title: "Proveedores", srcLogo: "proveedores", src: "/"},
     { title: "Movimientos", srcLogo: "movimientos", src: "/" },

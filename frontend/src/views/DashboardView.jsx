@@ -6,22 +6,25 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesThunk } from '../store/slices/category.slice';
 import { getProductsThunk } from '../store/slices/product.slice';
+import { getWarehousesThunk } from '../store/slices/warehouse.slice';
 
 const  DashboardView = () => {
 
     const dispatch = useDispatch();
     const categoryInformation = useSelector((state) => state.category.data.total);
     const productInformation = useSelector((state) => state.product.data.total);
+    const warehouseInformation = useSelector((state) => state.warehouse.data.total);
   
     useEffect(() => {
       dispatch(getCategoriesThunk());
       dispatch(getProductsThunk());
+      dispatch(getWarehousesThunk());
     }, []);
 
     const Menus = [
         { title: "Categorias", srcLogo: "categorias", src: "/categorias", howMany: categoryInformation },
         { title: "Productos", srcLogo: "productos", src: "/productos", howMany: productInformation },
-        { title: "Bogedas", srcLogo: "bodegas", src: "/", howMany: categoryInformation },
+        { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas", howMany: warehouseInformation },
         { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation },
         { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation},
         { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation },

@@ -49,13 +49,15 @@ const DashboardWarehouse = ({searchTerm}) => {
           <table className='w-full table-auto'>
             <thead>
               <tr className='text-left'>
-                  <th className='pb-4'>Nombre</th>
+                  <th className='pb-4 w-5/12'>Nombre</th>
+                  <th className='pb-4 w-5/12'>Dirección</th>
               </tr>
             </thead>
             <tbody>
               {warehouseFiltered.map((warehouse) => (
                 <tr key={warehouse.id} className="border-t hover:bg-slate-50">
                   <td className="py-3">{warehouse.name}</td>
+                  <td className="py-3">{warehouse.address}</td>
                   <td>
                     <button
                     onClick={() => navigate(`?editarBodega=${warehouse.id}`)}

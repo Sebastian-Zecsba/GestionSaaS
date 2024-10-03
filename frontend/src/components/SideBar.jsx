@@ -10,7 +10,7 @@ const SideBar = () => {
     { title: "Categorias", srcLogo: "categorias", src: "/categorias"},
     { title: "Productos", srcLogo: "productos", src: "/productos" },
     { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas" },
-    { title: "Inventario", srcLogo: "inventario", src: "/" },
+    { title: "Inventario", srcLogo: "inventario", src: "/inventario" },
     { title: "Proveedores", srcLogo: "proveedores", src: "/"},
     { title: "Movimientos", srcLogo: "movimientos", src: "/" },
   ];

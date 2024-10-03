@@ -25,7 +25,7 @@ const  DashboardView = () => {
         { title: "Categorias", srcLogo: "categorias", src: "/categorias", howMany: categoryInformation },
         { title: "Productos", srcLogo: "productos", src: "/productos", howMany: productInformation },
         { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas", howMany: warehouseInformation },
-        { title: "Inventario", srcLogo: "inventario", src: "/", howMany: categoryInformation },
+        { title: "Inventario", srcLogo: "inventario", src: "/inventario", howMany: categoryInformation },
         { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation},
         { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation },
       ];

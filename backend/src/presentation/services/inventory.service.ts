@@ -1,4 +1,4 @@
-import { InventoryModel } from "../../data/mongo";
+import { InventoryModel, ProductModel } from "../../data/mongo";
 import { CustomError, InventoryDto, PaginationDto, UpdateInventoryDto } from "../../domain";
 
 export class InventoryService{
@@ -29,42 +29,49 @@ export class InventoryService{
 
     }
 
-    async getInventory(paginationDto: PaginationDto){
+    async getInventory(paginationDto: PaginationDto) {
         const { page, limit, searchTerm } = paginationDto;
-
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
-
+    
+        let productQuery = {};
+        if (searchTerm) {
+            productQuery = { name: { $regex: searchTerm, $options: 'i' } };
+        }
+    
         try {
-            const [ total, inventories ] = await Promise.all([
+            const matchingProducts = await ProductModel.find(productQuery).select('_id');
+    
+            const productIds = matchingProducts.map(product => product._id);
+    
+            const query = productIds.length > 0 ? { product: { $in: productIds } } : {};
+    
+            const [total, inventories] = await Promise.all([
                 InventoryModel.countDocuments(query),
                 InventoryModel.find(query)
                     .skip((page - 1) * limit)
                     .limit(limit)
                     .populate('warehouse')
                     .populate('product')
-            ])
-
+            ]);
+    
             return {
-                page: page,
-                limit: limit,
-                total: total,
+                page,
+                limit,
+                total,
                 next: `/inventories?page=${(page + 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}`,
-                prev:  (page - 1 > 0) ? `/inventories?page=${(page - 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}` : null,
-                inventories: inventories.map(inventory => {
-                    return { 
-                        id: inventory.id,
-                        product: inventory.product,
-                        warehouse: inventory.warehouse,
-                        quantity: inventory.quantity
-                    }
-                })
-            }
-
+                prev: (page - 1 > 0) ? `/inventories?page=${(page - 1)}&limit=${limit}${searchTerm ? `&search=${searchTerm}` : ''}` : null,
+                inventories: inventories.map(inventory => ({
+                    id: inventory.id,
+                    product: inventory.product,
+                    warehouse: inventory.warehouse,
+                    quantity: inventory.quantity
+                }))
+            };
         } catch (error) {
-            throw CustomError.badRequest(`${error}`)
+            throw CustomError.badRequest(`${error}`);
         }
-
     }
+    
+    
 
     async getInvetoryById(inventoryId: string){
 

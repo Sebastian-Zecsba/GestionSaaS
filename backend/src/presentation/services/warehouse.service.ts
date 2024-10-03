@@ -24,11 +24,12 @@ export class WarehouseService {
 
         try {
             
-            const [ total, warehouses] = await Promise.all([
+            const [ total, warehouses, allWarehouses] = await Promise.all([
                 WarehouseModel.countDocuments((query)),
                 WarehouseModel.find(query)
                     .skip((page -1 ) * limit)
-                    .limit(limit)
+                    .limit(limit),
+                WarehouseModel.find()
             ])
 
             return {
@@ -40,9 +41,11 @@ export class WarehouseService {
                 warehouses: warehouses.map(warehouse => {
                     return {
                         id: warehouse.id,
-                        name: warehouse.name
+                        name: warehouse.name,
+                        address: warehouse.address
                     }
-                })
+                }),
+                allWarehouses: allWarehouses
             }
 
         } catch (error) {

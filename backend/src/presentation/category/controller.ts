@@ -1,7 +1,6 @@
 import { Request, Response } from "express";
 import { CategoryDto, CustomError, PaginationDto } from "../../domain";
 import { CategoryService } from "../services/category.service";
-import { parse } from "path";
 
 export class CategoryController { 
 
@@ -29,9 +28,9 @@ export class CategoryController {
     }
 
     getCategories = (req: Request, res: Response) => {
-        const { page = 1, limit = 10, searchTerm } = req.query;
+        const { page = 1, limit = 10, search } = req.query;
 
-        const searchQuery = typeof searchTerm === 'string' ? searchTerm : undefined;
+        const searchQuery = typeof search === 'string' ? search : undefined;
 
         const [error , paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})

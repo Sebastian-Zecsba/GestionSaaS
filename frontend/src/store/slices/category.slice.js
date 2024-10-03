@@ -14,7 +14,7 @@ export const categorySlice = createSlice({
 
 export const getCategoriesThunk = (url = '/categories', searchTerm = '') => (dispatch) => {
     dispatch(genericRequestThunk(async () => {
-        const query = searchTerm ? `${url}&searchTerm=${searchTerm}` : url
+        const query = searchTerm ? `${url}&search=${searchTerm}` : url
         const res = await axios.get(query)
         dispatch(setCategories(res.data))
     }))

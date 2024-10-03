@@ -27,12 +27,13 @@ export class ProductService {
         const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
 
         try {
-            const [ total, products] = await Promise.all([
+            const [ total, products, allProducts] = await Promise.all([
                 ProductModel.countDocuments(query),
                 ProductModel.find(query)
                     .skip((page-1) * limit)
                     .limit(limit)
-                    .populate('category')
+                    .populate('category'),
+                ProductModel.find()
             ])
 
             return {
@@ -49,7 +50,8 @@ export class ProductService {
                         price: product.price,
                         category: product.category ? product.category : null
                     }
-                })
+                }),
+                allProducts: allProducts
             }
         } catch (error) {
             throw CustomError.internalServer(`${error}`)

@@ -4,6 +4,7 @@ import { CategoryRoutes } from './category/routes';
 import { ProductRoutes } from './product/routes';
 import { WarehouseRoutes } from './warehouse/routes';
 import { InventoryRoutes } from './inventory/routes';
+import { InventoryMovementsRoutes } from './inventoryMovements/routes';
 
 
 export class AppRoutes {
@@ -16,6 +17,7 @@ export class AppRoutes {
     router.use('/api/products', ProductRoutes.routes)
     router.use('/api/warehouses', WarehouseRoutes.routes)
     router.use('/api/inventories', InventoryRoutes.routes)
+    router.use('/api/movements', InventoryMovementsRoutes.routes)
 
     return router;
   }

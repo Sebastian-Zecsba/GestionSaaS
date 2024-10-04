@@ -58,9 +58,9 @@ const DashboardInventory = ({searchTerm}) => {
             <tbody>
               {inventoryFiltered.map((inventory) => (
                 <tr key={inventory.id} className="border-t hover:bg-slate-50">
-                  <td className="py-3">{inventory.product?.name}</td>
+                  <td className="py-3">{inventory.product ? inventory.product?.name : <p className='font-semibold'>Producto eliminado</p>}</td>
                   <td className="py-3 text-center">{inventory?.quantity} </td>
-                  <td className="py-3">{inventory.warehouse?.name}</td>
+                  <td className="py-3">{inventory.warehouse ? inventory.warehouse?.name : <p className='font-semibold'>Bodega eliminada</p>}</td>
                   <td>
                     <button
                     onClick={() => navigate(`?editarInventario=${inventory.id}`)}

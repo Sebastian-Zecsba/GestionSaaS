@@ -1,57 +1,74 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { genericRequestThunk } from "./app.slice";
 import axios from "../../utils/axios";
+import { toast } from "react-toastify";
 
 export const productSlice = createSlice({
   name: "product",
   initialState: { data: [], productById: null },
   reducers: {
     setProducts: (state, { payload }) => {
-        state.data = payload
+      state.data = payload;
     },
-    setProductById: (state, { payload }) => {state.productById = payload;},
+    setProductById: (state, { payload }) => {
+      state.productById = payload;
+    },
   },
 });
 
+export const getProductsThunk =
+  (url = "/products", searchTerm = "") =>
+  async (dispatch) => {
+    try {
+      const query = searchTerm ? `${url}&search=${searchTerm}` : url;
+      const res = await axios.get(query);
+      dispatch(setProducts(res.data));
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
 
-export const getProductsThunk = ( url = '/products', searchTerm = '' ) => (dispatch) => {
-    dispatch(genericRequestThunk(async () => {
-        const query = searchTerm ? `${url}&search=${searchTerm}` : url
-        const res = await axios.get(query)
-        dispatch(setProducts(res.data))
-    }))
-}
+export const getProductByIdThunk = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/products/${id}`);
+    dispatch(setProductById(res.data));
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
 
-export const getProductByIdThunk = ( id ) => (dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-    const res = await axios.get(`/products/${id}`)
-    dispatch(setProductById(res.data))
-  }))
-}
-
-export const createProductThunk = ( data, currentPage ) => ( dispatch ) => {
-  dispatch(genericRequestThunk(async () => {
-    await axios.post('/products', data)
+export const createProductThunk = (data, currentPage) => async (dispatch) => {
+  try {
+    await axios.post("/products", data);
     const pageUrl = `/products?page=${currentPage}&limit=10`;
-    dispatch(getProductsThunk(pageUrl))
-  }))
-}
+    dispatch(getProductsThunk(pageUrl));
+    toast.success("Producto creado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
 
-export const deleteProductThunk = ( id, currentPage ) => (dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-    await axios.delete(`/products/${id}`)
+export const deleteProductThunk = (id, currentPage) => async (dispatch) => {
+  try {
+    await axios.delete(`/products/${id}`);
     const pageUrl = `/products?page=${currentPage}&limit=10`;
-    dispatch(getProductsThunk(pageUrl))
-  }))
-}
+    dispatch(getProductsThunk(pageUrl));
+    toast.success("Producto eliminado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
 
-export const upadateProductByIdThunk = (id, data, currentPage) => (dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-    await axios.put(`/products/${id}`, data)
-    const pageUrl = `/products?page=${currentPage}&limit=10`;
-    dispatch(getProductsThunk(pageUrl))
-  }))
-} 
+export const upadateProductByIdThunk =
+  (id, data, currentPage) => async (dispatch) => {
+    try {
+      await axios.put(`/products/${id}`, data);
+      const pageUrl = `/products?page=${currentPage}&limit=10`;
+      dispatch(getProductsThunk(pageUrl));
+      toast.success("Producto actualizado exitosamente");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
 
 export const { setProducts, setProductById } = productSlice.actions;
 

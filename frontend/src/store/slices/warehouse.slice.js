@@ -1,59 +1,76 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { genericRequestThunk } from "./app.slice";
 import axios from "../../utils/axios";
+import { toast } from "react-toastify";
 
 export const warehouseSlice = createSlice({
-    name: "warehouse",
-    initialState: { data: [], warehouseById: null },
-    reducers: {
-        setWarehouses: (state, { payload }) => {
-            state.data = payload;
-        },
-        setWarehouseById: (state, { payload }) => {
-            state.warehouseById = payload;
-        },
+  name: "warehouse",
+  initialState: { data: [], warehouseById: null },
+  reducers: {
+    setWarehouses: (state, { payload }) => {
+      state.data = payload;
+    },
+    setWarehouseById: (state, { payload }) => {
+      state.warehouseById = payload;
+    },
+  },
+});
+
+export const getWarehousesThunk =
+  (url = "/warehouses", searchTerm = "") =>
+  async (dispatch) => {
+    try {
+      const query = searchTerm ? `${url}&search=${searchTerm}` : url;
+      const res = await axios.get(query);
+      dispatch(setWarehouses(res.data));
+    } catch (error) {
+      toast.error(error.response.data.error);
     }
-})
+  };
 
-export const getWarehousesThunk = (url = '/warehouses', searchTerm = '') => (dispatch) => {
-    dispatch(genericRequestThunk(async () => {
-        const query = searchTerm ? `${url}&search=${searchTerm}` : url
-        const res = await axios.get(query)
-        dispatch(setWarehouses(res.data))
-    }))
-}
+export const getWarehouseById = (id) => async (dispatch) => {
+  try {
+    const res = await axios.get(`/warehouses/${id}`);
+    dispatch(setWarehouseById(res.data));
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
 
-export const getWarehouseById = (id) => (dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-      const res = await axios.get(`/warehouses/${id}`)
-      dispatch(setWarehouseById(res.data))
-  }))
-}
-
-export const createWarehouseThunk = (warehouse, currentPage) => async(dispatch) => {
-      dispatch(genericRequestThunk(async () => {
-        await axios.post('/warehouses', warehouse)
-        const pageUrl = `/warehouses?page=${currentPage}&limit=10`;
-        dispatch(getWarehousesThunk(pageUrl))
-      }))
-}
-
-export const deleteWarehouseById = (id, currentPage) => async(dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-      await axios.delete(`/warehouses/${id}`)
+export const createWarehouseThunk =
+  (warehouse, currentPage) => async (dispatch) => {
+    try {
+      await axios.post("/warehouses", warehouse);
       const pageUrl = `/warehouses?page=${currentPage}&limit=10`;
-      dispatch(getWarehousesThunk(pageUrl))
-  }))
-}
+      dispatch(getWarehousesThunk(pageUrl));
+      toast.success("Bodega creado exitosamente");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
 
-export const upadateWarehouseByIdThunk = (id, data, currentPage) => (dispatch) => {
-  dispatch(genericRequestThunk(async () => {
-      await axios.put(`/warehouses/${id}`, data)
+export const deleteWarehouseById = (id, currentPage) => async (dispatch) => {
+  try {
+    await axios.delete(`/warehouses/${id}`);
+    const pageUrl = `/warehouses?page=${currentPage}&limit=10`;
+    dispatch(getWarehousesThunk(pageUrl));
+    toast.success("Bodega eliminado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
+export const upadateWarehouseByIdThunk =
+  (id, data, currentPage) => async (dispatch) => {
+    try {
+      await axios.put(`/warehouses/${id}`, data);
       const pageUrl = `/warehouses?page=${currentPage}&limit=10`;
-      dispatch(getWarehousesThunk(pageUrl))
-  }))
-}
+      dispatch(getWarehousesThunk(pageUrl));
+      toast.success("Bodega actualizado exitosamente");
+    } catch (error) {
+      toast.error(error.response.data.error);
+    }
+  };
 
-export const { setWarehouseById, setWarehouses } = warehouseSlice.actions
+export const { setWarehouseById, setWarehouses } = warehouseSlice.actions;
 
-export default warehouseSlice.reducer
+export default warehouseSlice.reducer;

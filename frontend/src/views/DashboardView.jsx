@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getCategoriesThunk } from '../store/slices/category.slice';
 import { getProductsThunk } from '../store/slices/product.slice';
 import { getWarehousesThunk } from '../store/slices/warehouse.slice';
+import { getInventoryThunk } from '../store/slices/inventory.slice';
 
 const  DashboardView = () => {
 
@@ -14,18 +15,20 @@ const  DashboardView = () => {
     const categoryInformation = useSelector((state) => state.category.data.total);
     const productInformation = useSelector((state) => state.product.data.total);
     const warehouseInformation = useSelector((state) => state.warehouse.data.total);
-  
+    const inventoryInformation = useSelector((state) => state.inventory.data.total);
+
     useEffect(() => {
       dispatch(getCategoriesThunk());
       dispatch(getProductsThunk());
       dispatch(getWarehousesThunk());
+      dispatch(getInventoryThunk());
     }, []);
 
     const Menus = [
         { title: "Categorias", srcLogo: "categorias", src: "/categorias", howMany: categoryInformation },
         { title: "Productos", srcLogo: "productos", src: "/productos", howMany: productInformation },
         { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas", howMany: warehouseInformation },
-        { title: "Inventario", srcLogo: "inventario", src: "/inventario", howMany: categoryInformation },
+        { title: "Inventario", srcLogo: "inventario", src: "/inventario", howMany: inventoryInformation },
         { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation},
         { title: "Movimientos", srcLogo: "movimientos", src: "/", howMany: categoryInformation },
       ];

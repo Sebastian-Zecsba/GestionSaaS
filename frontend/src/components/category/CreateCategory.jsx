@@ -3,8 +3,9 @@ import { Dialog, DialogPanel} from '@headlessui/react'
 import { useForm } from 'react-hook-form'
 import React from 'react'
 import CategoryForm from "./CategoryForm"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createCategoryThunk } from "../../store/slices/category.slice"
+import { toast } from 'react-toastify'
 
 const CreateCategory = ({currentPage}) => {
     const navigate = useNavigate()

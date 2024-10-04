@@ -1,8 +1,8 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './layouts/App.layout';
-import { CategoriesView, DashboardView, ProductsView, WarehouseView } from './views';
-import Notification from './components/Notification';
-import InventoryView from './views/inventory/InventoryView';
+import { CategoriesView, DashboardView, InventoryView, ProductsView, WarehouseView } from './views';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function Router() {
   return (
@@ -17,7 +17,7 @@ function Router() {
         </Route>
       </Routes>
 
-      <Notification />
+      <ToastContainer />
     </BrowserRouter>
   );
 }

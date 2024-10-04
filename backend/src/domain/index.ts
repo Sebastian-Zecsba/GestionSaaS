@@ -13,5 +13,7 @@ export * from './dtos/warehouse/warehouse.dto'
 export * from './dtos/inventory/inventory.dto'
 export * from './dtos/inventory/updateInventory.dto'
 
+export * from './dtos/inventoryMovements/inventoryMovement.dto'
+
 export * from './errors/custom.error'
 export * from './dtos/shared/pagination.dto'

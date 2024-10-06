@@ -28,11 +28,11 @@ export class CategoryService{
         }
     }
 
-    async getCategories(paginationDto: PaginationDto){
+    async getCategories(paginationDto: PaginationDto, user: UserEntity){
         
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : { user: user.id };
 
         try {
             const [ total, categories, allCategories ] = await Promise.all([
@@ -40,7 +40,7 @@ export class CategoryService{
                 CategoryModel.find(query)
                     .skip((page - 1) * limit)
                     .limit(limit),
-                CategoryModel.find()
+                CategoryModel.find({user: user.id})
             ])
         
         return {
@@ -54,7 +54,8 @@ export class CategoryService{
                     id: category.id,
                     name: category.name,
                     description: category.description,
-                    isDeleted: category.isDeleted
+                    isDeleted: category.isDeleted,
+                    user: category.user
                 }
             }),
             allCategories: allCategories
@@ -65,23 +66,23 @@ export class CategoryService{
         }
     }
 
-    async getCategoryByid(categoryId: string){
+    async getCategoryByid(categoryId: string, user: UserEntity) {
         try {
-            const existCategory = await CategoryModel.findById(categoryId)
-            if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
-
-            const { id, name, description } = CategoryEntity.fromObject(existCategory)
+            const existCategory = await CategoryModel.findOne({ _id: categoryId, user: user.id });
+            if (!existCategory) throw CustomError.badRequest('Categoria no encontrada o no tienes acceso');
+    
+            const { id, name, description } = CategoryEntity.fromObject(existCategory);
             
-            return { id, name, description }
-
+            return { id, name, description };
         } catch (error) {
-            throw CustomError.internalServer(`${error}`)            
+            throw CustomError.internalServer(`${error}`);
         }
     }
+    
 
-    async deleteCategory(categoryId: string){
+    async deleteCategory(categoryId: string, user: UserEntity){
 
-        const existCategory = await CategoryModel.findById(categoryId)
+        const existCategory = await CategoryModel.findOne({ _id: categoryId, user: user.id });
         if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
             try {
@@ -93,9 +94,9 @@ export class CategoryService{
             }
     }
 
-    async updatedCategory(categoryDto: CategoryDto, categoryId: string){
+    async updatedCategory(categoryDto: CategoryDto, categoryId: string, user: UserEntity){
         
-        const existCategory = await CategoryModel.findById(categoryId)
+        const existCategory = await CategoryModel.findOne({ _id: categoryId, user: user.id });
         if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
         try {

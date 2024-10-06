@@ -18,6 +18,11 @@ const inventorySchema = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: [true, 'User is required']
     }
 })
 

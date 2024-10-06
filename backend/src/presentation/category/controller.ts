@@ -29,39 +29,44 @@ export class CategoryController {
 
     getCategories = (req: Request, res: Response) => {
         const { page = 1, limit = 10, search } = req.query;
+        const user = req.body.user
 
         const searchQuery = typeof search === 'string' ? search : undefined;
 
         const [error , paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})
 
-        this.categoryService.getCategories(paginationDto!)
+        this.categoryService.getCategories(paginationDto!, user)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
 
     getCategoryById = (req: Request, res: Response ) => {
         const { id } = req.params;
-        this.categoryService.getCategoryByid(id!)
+        const user = req.body.user
+
+        this.categoryService.getCategoryByid(id!, user)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
 
     deleteCategoryById = (req: Request, res: Response) => {
         const { id } = req.params
+        const user = req.body.user
 
-        this.categoryService.deleteCategory(id!)
+        this.categoryService.deleteCategory(id!, user)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
 
     updatedCategoryById = (req: Request, res: Response) => {
         const { id } = req.params
+        const user = req.body.user
 
         const [ error, categoryDto ] = CategoryDto.create(req.body)
         if(error) return res.status(400).json({error})
 
-        this.categoryService.updatedCategory(categoryDto!, id!)
+        this.categoryService.updatedCategory(categoryDto!, id!, user)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }

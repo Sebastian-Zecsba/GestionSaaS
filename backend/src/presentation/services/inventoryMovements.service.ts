@@ -80,13 +80,13 @@ export class InventoryMovementsService {
     }
   }
 
-  async getInventoryMovements(paginationDto: PaginationDto) {
+  async getInventoryMovements(paginationDto: PaginationDto, user: UserEntity) {
     const { page, limit, searchTerm } = paginationDto;
     
     let productQuery = {};
-    if (searchTerm) {
-        productQuery = { name: { $regex: searchTerm, $options: 'i' } };
-    }
+    
+    productQuery = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {user: user.id };
+
 
     try {
 

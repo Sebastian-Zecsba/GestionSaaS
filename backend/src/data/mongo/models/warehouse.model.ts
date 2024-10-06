@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const warehouseSchema = new mongoose.Schema({
     name: {
@@ -12,6 +12,11 @@ const warehouseSchema = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'user',
+        required: [true, 'User is required']
     }
 })
 

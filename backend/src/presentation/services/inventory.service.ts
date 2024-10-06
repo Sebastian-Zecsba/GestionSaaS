@@ -1,11 +1,11 @@
 import { InventoryModel, ProductModel } from "../../data/mongo";
-import { CustomError, InventoryDto, PaginationDto, UpdateInventoryDto } from "../../domain";
+import { CustomError, InventoryDto, PaginationDto, UpdateInventoryDto, UserEntity } from "../../domain";
 
 export class InventoryService{
 
     constructor(){}
 
-    async createInventory(inventoryDto: InventoryDto){
+    async createInventory(inventoryDto: InventoryDto, user: UserEntity){
 
         const { product, warehouse } = inventoryDto;
 
@@ -20,8 +20,13 @@ export class InventoryService{
         }
         
         try {
-            const createInvetory = await InventoryModel.create(inventoryDto)
+            const createInvetory = new InventoryModel({
+                ...inventoryDto,
+                user: user
+            })
+
             await createInvetory.save()
+
             return createInvetory
         } catch (error) {
             throw CustomError.badRequest(`${error}`)   
@@ -29,13 +34,12 @@ export class InventoryService{
 
     }
 
-    async getInventory(paginationDto: PaginationDto) {
+    async getInventory(paginationDto: PaginationDto, user: UserEntity) {
         const { page, limit, searchTerm } = paginationDto;
     
         let productQuery = {};
-        if (searchTerm) {
-            productQuery = { name: { $regex: searchTerm, $options: 'i' } };
-        }
+
+        productQuery = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {user: user.id};
     
         try {
             const matchingProducts = await ProductModel.find(productQuery).select('_id');
@@ -74,10 +78,10 @@ export class InventoryService{
     
     
 
-    async getInvetoryById(inventoryId: string){
+    async getInvetoryById(inventoryId: string, user: UserEntity){
 
         try {
-            const inventoryExist = await InventoryModel.findById(inventoryId)
+            const inventoryExist = await InventoryModel.findOne({ _id: inventoryId, user: user.id })
                 .populate('warehouse')
                 .populate('product')
             if(!inventoryExist) throw CustomError.badRequest('No se encontro Inventario')
@@ -89,9 +93,9 @@ export class InventoryService{
 
     }
 
-    async deleteInventoryById(inventoryId: string){
+    async deleteInventoryById(inventoryId: string, user: UserEntity){
 
-        const inventoryExist = await InventoryModel.findById(inventoryId)
+        const inventoryExist = await InventoryModel.findOne({ _id: inventoryId, user: user.id })
         if(!inventoryExist) throw CustomError.badRequest('No se encontro Inventario')
 
         try {
@@ -103,9 +107,9 @@ export class InventoryService{
         }
     }
 
-    async updateInventoryById(updateInventoryDto: UpdateInventoryDto, inventoryId: string) {
+    async updateInventoryById(updateInventoryDto: UpdateInventoryDto, inventoryId: string, user: UserEntity) {
 
-        const inventoryExist = await InventoryModel.findById(inventoryId);
+        const inventoryExist = await InventoryModel.findOne({ _id: inventoryId, user: user.id })
         if (!inventoryExist) throw CustomError.badRequest('No se encontró Inventario');
         
         try {

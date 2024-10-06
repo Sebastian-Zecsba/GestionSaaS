@@ -11,7 +11,10 @@ export class ProductService {
         if(productExist) throw CustomError.badRequest('Este roducto ya existe')
 
         try {
-            const product = await ProductModel.create(productDto)
+            const product = new ProductModel({
+                ...productDto,
+                user: user.id
+            })
             
             await product.save()
 

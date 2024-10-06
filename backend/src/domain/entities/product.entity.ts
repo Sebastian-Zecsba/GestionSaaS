@@ -7,12 +7,13 @@ export class ProductEntity {
         public description: string,
         public price: number,
         public category: string,
-        public user: string
+        public user: string,
+        public isDeleted: boolean
     ){}
 
     static fromObject(object: {[key:string]:any}){
 
-        const { id, _id, name, description, price, category, user } = object;
+        const { id, _id, name, description, price, category, user, isDeleted } = object;
 
         if(!_id && !id) {
             throw CustomError.badRequest('Missing id')
@@ -22,7 +23,7 @@ export class ProductEntity {
         if (!description) throw CustomError.badRequest('Description is required');
         if (price == null) throw CustomError.badRequest('Price is required');
 
-        return new ProductEntity(_id || id, name, description, price, category, user);
+        return new ProductEntity(_id || id, name, description, price, category, user, isDeleted);
 
      }
 }

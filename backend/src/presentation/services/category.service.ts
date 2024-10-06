@@ -53,7 +53,8 @@ export class CategoryService{
                 return { 
                     id: category.id,
                     name: category.name,
-                    description: category.description
+                    description: category.description,
+                    isDeleted: category.isDeleted
                 }
             }),
             allCategories: allCategories
@@ -84,13 +85,9 @@ export class CategoryService{
         if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
             try {
-                await Promise.all([
-                    existCategory.deleteOne(),
-                    existCategory.save(),
-                    ProductModel.updateMany({ category: categoryId }, { $unset: { category: "" } })
-                ])
+                const result = await CategoryModel.findOneAndUpdate({_id: categoryId}, {isDeleted: true}, { new: true})
 
-                return `Category has been deleted`
+                return result
             } catch (error) {
                 throw CustomError.internalServer(`${error}`)            
             }

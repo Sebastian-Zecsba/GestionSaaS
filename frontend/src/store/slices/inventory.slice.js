@@ -15,9 +15,7 @@ export const inventorySlice = createSlice({
   },
 });
 
-export const getInventoryThunk =
-  (url = "/inventories", searchTerm = "") =>
-  async (dispatch) => {
+export const getInventoryThunk = (url = "/inventories", searchTerm = "") => async (dispatch) => {
     try {
       const query = searchTerm ? `${url}&search=${searchTerm}` : url;
       const res = await axios.get(query);

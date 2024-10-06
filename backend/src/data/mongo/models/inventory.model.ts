@@ -14,6 +14,10 @@ const inventorySchema = new mongoose.Schema({
     quantity: {
         type: Number,
         required: [true, 'Quantity is required']
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 })
 

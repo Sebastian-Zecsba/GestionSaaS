@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { CustomError, InventoryMovementsDto } from "../../domain";
+import { CustomError, InventoryMovementsDto, PaginationDto } from "../../domain";
 import { InventoryMovementsService } from "../services/inventoryMovements.service";
 
 export class InventoryMovementsController {
@@ -24,6 +24,18 @@ export class InventoryMovementsController {
         this.inventoryService.createInventoryMovements(inventoryMovementsDto!, req.body.user!)
             .then((inventoryMovements) => res.json(inventoryMovements))
             .catch(error => this.handleError(error, res))
+    }
+
+    getInventoryMovements = (req: Request, res: Response) => {
+        const { page = 1, limit = 10, search} = req.query
+        const searchQuery = typeof search === 'string' ? search : undefined;
+        const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery)
+        if(error) return res.status(400).json({error})
+
+        this.inventoryService.getInventoryMovements(paginationDto!)
+            .then((inventoryMovements) => res.json(inventoryMovements))
+            .catch(error => this.handleError(error, res))
+
     }
 
 

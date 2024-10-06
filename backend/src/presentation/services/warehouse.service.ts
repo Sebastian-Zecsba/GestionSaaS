@@ -42,7 +42,8 @@ export class WarehouseService {
                     return {
                         id: warehouse.id,
                         name: warehouse.name,
-                        address: warehouse.address
+                        address: warehouse.address,
+                        isDeleted: warehouse.isDeleted
                     }
                 }),
                 allWarehouses: allWarehouses
@@ -72,12 +73,9 @@ export class WarehouseService {
 
         try {
             
-            await Promise.all([
-                warehouseExist.deleteOne(),
-                warehouseExist.save()
-            ])
-
-            return `Bodega eliminada`
+            const result = await WarehouseModel.findOneAndUpdate({_id: warehouseId}, { isDeleted: true}, {new: true})
+            
+            return result
         } catch (error) {
             throw CustomError.internalServer(`${error}`)    
         }

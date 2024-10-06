@@ -57,27 +57,28 @@ const DashboardProduct = ({searchTerm}) => {
               </tr>
             </thead>
             <tbody>
-              {productsFiltered.map((product) => (
-                <tr key={product.id} className="border-t hover:bg-slate-50">
-                  <td className="py-3">{product.name}</td>
-                  <td className="py-3">{product.description}</td>
-                  <td className="py-3">{product.price.toLocaleString('es-ES')}</td>
-                  <td className="py-3">{product.category ? product.category.name : <p className='font-semibold'>Categoria eliminada</p>}</td>
-                  <td>
+              {productsFiltered.filter(product => !product.isDeleted)
+                .map((product) => (
+                  <tr key={product.id} className="border-t hover:bg-slate-50">
+                    <td className="py-3">{product.name}</td>
+                    <td className="py-3">{product.description}</td>
+                    <td className="py-3">{product.price.toLocaleString('es-ES')}</td>
+                    <td className="py-3">{product.category.isDeleted ? <p className='font-semibold text-gray-400'>{product.category.name}</p> :  product.category.name}</td>
+                    <td>
+                      <button
+                      onClick={() => navigate(`?editarProducto=${product.id}`)}
+                      className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
+                    >
+                      Editar
+                    </button>
                     <button
-                    onClick={() => navigate(`?editarProducto=${product.id}`)}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => dispatch(deleteProductThunk(product.id, currentPage))}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Eliminar
-                  </button></td>
-                </tr>
-              ))}
+                      onClick={() => dispatch(deleteProductThunk(product.id, currentPage))}
+                      className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
+                    >
+                      Eliminar
+                    </button></td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (

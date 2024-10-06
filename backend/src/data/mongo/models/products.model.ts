@@ -21,6 +21,10 @@ const product = new mongoose.Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
         required: [true, 'User is required']
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 })
 

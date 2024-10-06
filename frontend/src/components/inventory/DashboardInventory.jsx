@@ -5,7 +5,6 @@ import { deleteInventoryByIdThunk, getInventoryThunk } from '../../store/slices/
 import ButtonCreate from '../ButtonCreate'
 import Pagination from '../Pagination'
 import CreateInventory from './CreateInventory'
-import EditInventory from './EditInventory'
 
 const DashboardInventory = ({searchTerm}) => {
 
@@ -56,26 +55,25 @@ const DashboardInventory = ({searchTerm}) => {
               </tr>
             </thead>
             <tbody>
-              {inventoryFiltered.map((inventory) => (
-                <tr key={inventory.id} className="border-t hover:bg-slate-50">
-                  <td className="py-3">{inventory.product ? inventory.product?.name : <p className='font-semibold'>Producto eliminado</p>}</td>
-                  <td className="py-3 text-center">{inventory?.quantity} </td>
-                  <td className="py-3">{inventory.warehouse ? inventory.warehouse?.name : <p className='font-semibold'>Bodega eliminada</p>}</td>
-                  <td>
+              {inventoryFiltered.filter(inventory => !inventory.isDeleted)
+                .map((inventory) => (
+                  <tr key={inventory.id} className="border-t hover:bg-slate-50">
+                    <td className="py-3">{!inventory.product.isDeleted 
+                        ? inventory.product?.name 
+                        : <p className='font-semibold text-gray-400'>{inventory.product?.name}</p>}</td>
+                    <td className="py-3 text-center">{inventory?.quantity} </td>
+                    <td className="py-3">{!inventory.warehouse.isDeleted 
+                        ? inventory.warehouse?.name 
+                        : <p className='font-semibold text-gray-400'>{inventory.warehouse?.name}</p>}</td>
+                    <td>
                     <button
-                    onClick={() => navigate(`?editarInventario=${inventory.id}`)}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => dispatch(deleteInventoryByIdThunk(inventory.id, currentPage))}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Eliminar
-                  </button></td>
-                </tr>
-              ))}
+                      onClick={() => dispatch(deleteInventoryByIdThunk(inventory.id, currentPage))}
+                      className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
+                    >
+                      Eliminar
+                    </button></td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (
@@ -98,10 +96,6 @@ const DashboardInventory = ({searchTerm}) => {
 
 
         <CreateInventory 
-          currentPage={currentPage}
-        />
-
-        <EditInventory 
           currentPage={currentPage}
         />
     </div>

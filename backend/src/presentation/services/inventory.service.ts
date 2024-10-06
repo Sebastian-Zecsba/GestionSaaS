@@ -63,7 +63,8 @@ export class InventoryService{
                     id: inventory.id,
                     product: inventory.product,
                     warehouse: inventory.warehouse,
-                    quantity: inventory.quantity
+                    quantity: inventory.quantity,
+                    isDeleted: inventory.isDeleted
                 }))
             };
         } catch (error) {
@@ -94,12 +95,9 @@ export class InventoryService{
         if(!inventoryExist) throw CustomError.badRequest('No se encontro Inventario')
 
         try {
-            await Promise.all([
-                inventoryExist.deleteOne(),
-                inventoryExist.save()
-            ])
-
-            return `Inventario eliminado`
+            const result = await InventoryModel.findOneAndUpdate({_id: inventoryId}, { isDeleted: true}, {new: true})
+            
+            return result
         } catch (error) {
             throw CustomError.badRequest(`${error}`)
         }

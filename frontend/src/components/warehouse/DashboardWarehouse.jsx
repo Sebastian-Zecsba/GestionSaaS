@@ -54,25 +54,26 @@ const DashboardWarehouse = ({searchTerm}) => {
               </tr>
             </thead>
             <tbody>
-              {warehouseFiltered.map((warehouse) => (
-                <tr key={warehouse.id} className="border-t hover:bg-slate-50">
-                  <td className="py-3">{warehouse.name}</td>
-                  <td className="py-3">{warehouse.address}</td>
-                  <td>
+              {warehouseFiltered.filter(warehouse => !warehouse.isDeleted)
+                .map((warehouse) => (
+                  <tr key={warehouse.id} className="border-t hover:bg-slate-50">
+                    <td className="py-3">{warehouse.name}</td>
+                    <td className="py-3">{warehouse.address}</td>
+                    <td>
+                      <button
+                      onClick={() => navigate(`?editarBodega=${warehouse.id}`)}
+                      className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
+                    >
+                      Editar
+                    </button>
                     <button
-                    onClick={() => navigate(`?editarBodega=${warehouse.id}`)}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => dispatch(deleteWarehouseById(warehouse.id, currentPage))}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Eliminar
-                  </button></td>
-                </tr>
-              ))}
+                      onClick={() => dispatch(deleteWarehouseById(warehouse.id, currentPage))}
+                      className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
+                    >
+                      Eliminar
+                    </button></td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         ) : (

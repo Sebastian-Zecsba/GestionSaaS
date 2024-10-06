@@ -65,9 +65,10 @@ const ProductForm = ({register}) => {
             >Categories</label>
             <select id="category" {...register("category")}>
                 <option value="seleccionar"> -- Selecciona un Categoria --</option>
-                {categories.allCategories?.map((category) => (
-                    <option key={category.id} value={category.id} >{category.name}</option>
-                ))}
+                {categories.allCategories?.filter(category => !category.isDeleted)
+                    .map((category) => (
+                        <option key={category.id} value={category.id} >{category.name}</option>
+                    ))}
             </select>
         </div>
     </div>

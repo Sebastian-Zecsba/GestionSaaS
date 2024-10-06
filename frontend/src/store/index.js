@@ -4,6 +4,8 @@ import categorySlice from './slices/category.slice'
 import productSlice from './slices/product.slice'
 import warehouseSlice from './slices/warehouse.slice'
 import inventorySlice from './slices/inventory.slice'
+import movementSlice from './slices/movements.slice'
+
 
 export default configureStore({
   reducer: {
@@ -11,6 +13,7 @@ export default configureStore({
     category: categorySlice,
     product: productSlice,
     warehouse: warehouseSlice,
-    inventory: inventorySlice
+    inventory: inventorySlice,
+    movement: movementSlice
   }
 })

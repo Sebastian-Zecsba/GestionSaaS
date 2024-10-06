@@ -12,6 +12,7 @@ const DashboardCategory = ({searchTerm}) => {
   const dispatch = useDispatch();
   const categoryInformation = useSelector((state) => state.category);
 
+
   const [currentPage, setCurrentPage] = useState(1);
 
   const fetchCategories = useCallback((page, searchTerm) => {
@@ -57,27 +58,29 @@ const DashboardCategory = ({searchTerm}) => {
             </tr>
           </thead>
           <tbody>
-            {filteredCategories.map((category) => (
-              <tr key={category.id} className="border-t hover:bg-slate-50">
-                <td className="py-3">{category.name}</td>
-                <td className="py-3">{category.description}</td>
-                <td className="py-3">
-                  <button
-                    onClick={() => navigate(`?editCategory=${category.id}`)}
-                    className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => dispatch(deleteCategoryById(category.id, currentPage))}
-                    className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
-                  >
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
+              {filteredCategories
+                .filter(category => !category.isDeleted)
+                .map((category) => (
+                  <tr key={category.id} className="border-t hover:bg-slate-50">
+                    <td className="py-3">{category.name}</td>
+                    <td className="py-3">{category.description}</td>
+                    <td className="py-3">
+                      <button
+                        onClick={() => navigate(`?editCategory=${category.id}`)}
+                        className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
+                      >
+                        Editar
+                      </button>
+                      <button
+                        onClick={() => dispatch(deleteCategoryById(category.id, currentPage))}
+                        className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
+                      >
+                        Eliminar
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
         </table>
       ) : (
         <div className="flex gap-10 py-4 items-center">

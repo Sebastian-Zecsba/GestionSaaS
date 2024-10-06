@@ -7,12 +7,13 @@ export class UserEntity {
         public name: string,
         public email: string,
         public password: string,
-        public role: string[]
+        public role: string[],
+        public isDeleted: boolean
     ) {}
 
 
     static fromObject(object: {[key:string]:any}){
-        const { id, _id, name, email, password, role,} = object
+        const { id, _id, name, email, password, role, isDeleted } = object
 
         if(!_id && !id) {
             throw CustomError.badRequest('Missing id')
@@ -23,6 +24,6 @@ export class UserEntity {
         if(!password) throw CustomError.badRequest('Missing password')
         if(!role) throw CustomError.badRequest('Missing role')
 
-        return new UserEntity(_id || id, name, email, password, role)
+        return new UserEntity(_id || id, name, email, password, role, isDeleted)
     }
 }

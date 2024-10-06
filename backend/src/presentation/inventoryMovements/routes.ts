@@ -10,6 +10,7 @@ export class InventoryMovementsRoutes {
         const inventoryMovementsController = new InventoryMovementsController(inventoryMovenetsService);
 
         router.post("/", [AuthMiddleware.validateJWT], inventoryMovementsController.createInventoryMovements);
+        router.get("/", [AuthMiddleware.validateJWT], inventoryMovementsController.getInventoryMovements);
 
         return router;
     }

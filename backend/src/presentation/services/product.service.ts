@@ -48,7 +48,8 @@ export class ProductService {
                         name: product.name,
                         description: product.description,
                         price: product.price,
-                        category: product.category ? product.category : null
+                        category: product.category,
+                        isDeleted: product.isDeleted
                     }
                 }),
                 allProducts: allProducts
@@ -64,8 +65,8 @@ export class ProductService {
             const findProductById = await ProductModel.findById(productId)
             if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
-            const { id, name, description, price, category } = ProductEntity.fromObject(findProductById)
-            return { id, name, description, price, category: category ? category : null }
+            const { id, name, description, price, category, isDeleted } = ProductEntity.fromObject(findProductById)
+            return { id, name, description, price, category, isDeleted }
 
         } catch (error) {
             throw CustomError.internalServer(`${error}`)
@@ -79,12 +80,9 @@ export class ProductService {
 
         try {
             
-            await Promise.all([
-                findProductById.deleteOne(),
-                findProductById.save()
-            ])
-
-            return  `Product with id no matter has been deleted`
+            const result = await ProductModel.findOneAndUpdate({_id: productId}, { isDeleted: true}, {new: true})
+            
+            return result
 
         } catch (error) {
             throw CustomError.internalServer(`${error}`)

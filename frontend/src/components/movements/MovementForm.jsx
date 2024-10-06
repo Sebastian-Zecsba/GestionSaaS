@@ -1,17 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect} from 'react'
 import { useDispatch, useSelector } from 'react-redux';
-import { getProductsThunk } from '../../store/slices/product.slice';
 import { getWarehousesThunk } from '../../store/slices/warehouse.slice';
+import { getProductsThunk } from '../../store/slices/product.slice';
 
-const InvetoryForm = ({ register }) => {
-  const dispatch = useDispatch();
-  const products = useSelector((state) => state.product.data);
-  const warehouses = useSelector((state) => state.warehouse.data); 
+const MovementForm = ({ register }) => {
 
-  useEffect(() => {
-    dispatch(getProductsThunk());
-    dispatch(getWarehousesThunk());
-  }, [dispatch]);
+    const dispatch = useDispatch()
+    const products = useSelector((state) => state.product.data);
+    const warehouses = useSelector((state) => state.warehouse.data); 
+
+    useEffect(() => {
+        dispatch(getProductsThunk())
+        dispatch(getWarehousesThunk())
+    }, [])
 
   return (
     <div>
@@ -29,6 +30,7 @@ const InvetoryForm = ({ register }) => {
             ))}
         </select>
       </div>
+      
       <div className='flex flex-col gap-3 my-6'>
         <label className="font-normal text-2xl" htmlFor="warehouse">
           Bodega
@@ -43,20 +45,49 @@ const InvetoryForm = ({ register }) => {
             ))}
         </select>
       </div>
+      
+      <div className='flex flex-col gap-3 my-6'>
+        <label className="font-normal text-2xl">
+          Tipo de Movimiento
+        </label>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="entrada"
+              {...register("movement_type")}
+            />
+            Entrada
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              value="salida"
+              {...register("movement_type")}
+            />
+            Salida
+          </label>
+        </div>
+      </div>
+      
       <div className='flex flex-col gap-3 my-6'>
         <label className="font-normal text-2xl" htmlFor="quantity">
           Cantidad del producto
         </label>
         <input
           id="quantity"
-          type="text"
+          type="number"
           placeholder="Ingresa la cantidad del producto"
           className="w-full p-3 border-gray-300 border"
-          {...register("quantity")}
+          {...register("quantity", {
+            valueAsNumber: true
+          })}
         />
       </div>
     </div>
   );
-};
+}
 
-export default InvetoryForm;
+export default MovementForm;

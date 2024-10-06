@@ -20,9 +20,17 @@ const inventoryMovementsSchema = new Schema({
         type: Number,
         required: true
     },
+    movement_type: {
+        type: String,
+        required: true
+    },
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 })
 

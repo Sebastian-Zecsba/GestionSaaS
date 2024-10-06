@@ -8,6 +8,10 @@ const warehouseSchema = new mongoose.Schema({
     address: {
         type: String,
         required: [true, 'Address is required']
+    },
+    isDeleted: {
+        type: Boolean,
+        default: false
     }
 })
 

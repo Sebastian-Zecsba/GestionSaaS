@@ -46,7 +46,10 @@ export class InventoryService{
     
             const productIds = matchingProducts.map(product => product._id);
     
-            const query = productIds.length > 0 ? { product: { $in: productIds } } : {};
+            const query = {
+                product: productIds.length > 0 ? { $in: productIds } : { $exists: true },
+                user: user.id
+            };
     
             const [total, inventories] = await Promise.all([
                 InventoryModel.countDocuments(query),

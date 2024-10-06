@@ -19,7 +19,13 @@ export class InventoryMovementsService {
             let existOnInventory = await InventoryModel.findOne({ product, warehouse });
           
             if (!existOnInventory) {
-              const createNewInventory = await InventoryModel.create({ product, warehouse, quantity });
+              const createNewInventory = new InventoryModel({
+                product, 
+                warehouse, 
+                quantity,
+                user: user.id
+              });
+
               await createNewInventory.save();
               
               const createMovement = new InventoryMovementsModel({
@@ -93,7 +99,7 @@ export class InventoryMovementsService {
         const matchingProducts = await ProductModel.find(productQuery).select('_id');
         const productIds = matchingProducts.map(product => product._id);
 
-        let query: any = {};
+        let query: any = {user: user.id};
         if (productIds.length > 0) {
             query.product = { $in: productIds };
         }

@@ -7,9 +7,6 @@ export class ProductService {
 
     async createProduct(productDto: ProductDto, user: UserEntity){
 
-        const productExist = await ProductModel.findOne({name: productDto.name});
-        if(productExist) throw CustomError.badRequest('Este roducto ya existe')
-
         try {
             const product = new ProductModel({
                 ...productDto,
@@ -27,7 +24,7 @@ export class ProductService {
     async getProducts(paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {};
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {user: user.id};
 
         try {
             const [ total, products, allProducts] = await Promise.all([

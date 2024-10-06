@@ -5,13 +5,11 @@ export class WarehouseService {
     constructor(){}
 
     async createWarehouse( createWarehouse: WarehouseDto, user: UserEntity ){
-        const existWarehouse = await WarehouseModel.findOne({name: createWarehouse.name})
-        if(existWarehouse) throw CustomError.badRequest('Bodega ya registrada')
 
         try {
             const create = new WarehouseModel({
                 ...createWarehouse,
-                user: user
+                user: user.id
             })
 
             await create.save()
@@ -24,7 +22,7 @@ export class WarehouseService {
     async getWarehouses( paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id} : {};
+        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id} : {user: user.id};
 
         try {
             
@@ -33,7 +31,7 @@ export class WarehouseService {
                 WarehouseModel.find(query)
                     .skip((page -1 ) * limit)
                     .limit(limit),
-                WarehouseModel.find()
+                WarehouseModel.find({user: user.id})
             ])
 
             return {

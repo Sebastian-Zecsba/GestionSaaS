@@ -1,15 +1,19 @@
 import { WarehouseModel } from "../../data/mongo";
-import { CustomError, PaginationDto, WarehouseDto } from "../../domain";
+import { CustomError, PaginationDto, UserEntity, WarehouseDto } from "../../domain";
 
 export class WarehouseService { 
     constructor(){}
 
-    async createWarehouse( createWarehouse: WarehouseDto ){
+    async createWarehouse( createWarehouse: WarehouseDto, user: UserEntity ){
         const existWarehouse = await WarehouseModel.findOne({name: createWarehouse.name})
         if(existWarehouse) throw CustomError.badRequest('Bodega ya registrada')
 
         try {
-            const create = await WarehouseModel.create(createWarehouse)
+            const create = new WarehouseModel({
+                ...createWarehouse,
+                user: user
+            })
+
             await create.save()
             return create
         } catch (error) {
@@ -17,10 +21,10 @@ export class WarehouseService {
         }
     }
 
-    async getWarehouses( paginationDto: PaginationDto){
+    async getWarehouses( paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}} : {};
+        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id} : {};
 
         try {
             
@@ -55,9 +59,9 @@ export class WarehouseService {
 
     }
 
-    async getWarehouseById(warehouseId: string){
+    async getWarehouseById(warehouseId: string, user: UserEntity){
         try {
-            const warehouseExist = await WarehouseModel.findById(warehouseId)
+            const warehouseExist = await WarehouseModel.findOne({ _id: warehouseId, user: user.id });
             if(!warehouseExist) throw CustomError.badRequest('Bodega no registrada')
 
             return warehouseExist
@@ -66,9 +70,9 @@ export class WarehouseService {
         }
     }
 
-    async deleteWarehouseById(warehouseId: string){
+    async deleteWarehouseById(warehouseId: string, user: UserEntity){
 
-        const warehouseExist = await WarehouseModel.findById(warehouseId)
+        const warehouseExist = await WarehouseModel.findOne({ _id: warehouseId, user: user.id });
         if(!warehouseExist) throw CustomError.badRequest('Bodega no registrada')
 
         try {
@@ -81,13 +85,13 @@ export class WarehouseService {
         }
     }
 
-    async updateWarehouseById(warehouseDto: WarehouseDto, warehouseId: string  ){
-        const warehouseExist = await WarehouseModel.findById(warehouseId)
+    async updateWarehouseById(warehouseDto: WarehouseDto, warehouseId: string, user: UserEntity  ){
+        const warehouseExist = await WarehouseModel.findOne({ _id: warehouseId, user: user.id });
         if(!warehouseExist) throw CustomError.badRequest('Bodega no registrada')
 
         try {
             
-            const updateWarehouse = await WarehouseModel.findOneAndUpdate({_id: warehouseId}, warehouseDto, {new: true})
+            const updateWarehouse = await WarehouseModel.findOneAndUpdate({_id: warehouseId, user: user.id}, warehouseDto, {new: true})
 
             if (!updateWarehouse) {throw CustomError.badRequest('Actualización fallida, bodega no encontrado')}
 

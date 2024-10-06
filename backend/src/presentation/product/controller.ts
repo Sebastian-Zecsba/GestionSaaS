@@ -27,40 +27,44 @@ export class ProductController {
     }
 
     getProduct = async(req: Request, res: Response) => {
+        const user = req.body.user
         const { page = 1, limit = 10, search} = req.query;
         const searchQuery = typeof search === 'string' ? search : undefined;
 
         const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})
 
-        this.productService.getProducts(paginationDto!)
+        this.productService.getProducts(paginationDto!, user)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
 
     getProductById = async(req: Request, res: Response) => {
+        const user = req.body.user
         const { id } = req.params;
 
-        this.productService.getProductById(id!)
+        this.productService.getProductById(id!, user)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
 
     deleteProductById = async(req: Request, res: Response) => {
+        const user = req.body.user
         const { id } = req.params
 
-        this.productService.deleteProduct(id!)
+        this.productService.deleteProduct(id!, user)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
 
     updateProduct = async(req: Request, res: Response) => {
+        const user = req.body.user
         const { id } = req.params;
 
         const [error, productDto] = ProductDto.create({...req.body, user: req.body.user.id})
         if(error) return res.status(400).json({error})
 
-        this.productService.updateProduct(productDto!, id!)
+        this.productService.updateProduct(productDto!, id!, user)
             .then((product) => res.status(201).json(product))
             .catch(error => this.handleError(error, res))
     }

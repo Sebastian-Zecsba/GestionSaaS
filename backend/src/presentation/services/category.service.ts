@@ -100,9 +100,13 @@ export class CategoryService{
         if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
 
         try {
-            const updateCategory = await CategoryModel.findOneAndUpdate({_id: categoryId}, categoryDto, {new: true})
+            const updateCategory = await CategoryModel.findOneAndUpdate(
+                {_id: categoryId, user: user.id}, 
+                categoryDto, 
+                {new: true})
+
             if (!updateCategory) {
-                throw CustomError.badRequest('Update failed, product not found');
+                throw CustomError.badRequest('Error al actualizar');
             }
 
             const { id, name, description } = CategoryEntity.fromObject(updateCategory)

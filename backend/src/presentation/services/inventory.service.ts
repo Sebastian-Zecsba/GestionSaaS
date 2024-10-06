@@ -114,7 +114,7 @@ export class InventoryService{
         
         try {
             const updateInventory = await InventoryModel.findByIdAndUpdate(
-                { _id: inventoryId },
+                { _id: inventoryId, user: user.id },
                 updateInventoryDto, 
                 { new: true }
             );

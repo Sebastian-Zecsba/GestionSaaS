@@ -24,10 +24,10 @@ export class ProductService {
         }
     }
 
-    async getProducts(paginationDto: PaginationDto){
+    async getProducts(paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' } } : {};
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {};
 
         try {
             const [ total, products, allProducts] = await Promise.all([
@@ -36,7 +36,7 @@ export class ProductService {
                     .skip((page-1) * limit)
                     .limit(limit)
                     .populate('category'),
-                ProductModel.find()
+                ProductModel.find({user: user.id})
             ])
 
             return {
@@ -62,10 +62,10 @@ export class ProductService {
         }
     }
 
-    async getProductById(productId: string){
+    async getProductById(productId: string, user: UserEntity){
 
         try {    
-            const findProductById = await ProductModel.findById(productId)
+            const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
             if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
             const { id, name, description, price, category, isDeleted } = ProductEntity.fromObject(findProductById)
@@ -77,8 +77,8 @@ export class ProductService {
 
     }
 
-    async deleteProduct(productId: string){
-        const findProductById = await ProductModel.findById(productId)
+    async deleteProduct(productId: string, user: UserEntity){
+        const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
         if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
         try {
@@ -92,8 +92,8 @@ export class ProductService {
         }
     }
 
-    async updateProduct(productDto: ProductDto, productId: string){
-        const findProductById = await ProductModel.findById(productId)
+    async updateProduct(productDto: ProductDto, productId: string, user: UserEntity){
+        const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
         if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
         if (productDto.category) {
@@ -102,7 +102,7 @@ export class ProductService {
         }
 
         try {
-            const updateProduct = await ProductModel.findOneAndUpdate({_id: productId}, productDto, {new: true} )
+            const updateProduct = await ProductModel.findOneAndUpdate({_id: productId, user: user.id}, productDto, {new: true} )
                 .populate('user')
                 .populate('category')
 

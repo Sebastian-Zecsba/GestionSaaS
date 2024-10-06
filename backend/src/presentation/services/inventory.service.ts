@@ -39,7 +39,7 @@ export class InventoryService{
     
         let productQuery = {};
 
-        productQuery = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id } : {user: user.id};
+        productQuery = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id,  isDeleted: false  } : {user: user.id,  isDeleted: false };
     
         try {
             const matchingProducts = await ProductModel.find(productQuery).select('_id');

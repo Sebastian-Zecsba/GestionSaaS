@@ -52,6 +52,7 @@ const DashboardInventory = ({searchTerm}) => {
                   <th className='pb-4 w-5/12'>Producto</th>
                   <th className='pb-4 w-2/12 text-center'>Cantidad - Unidades</th>
                   <th className='pb-4 w-2/12'>Bodega</th>
+                  <th className='pb-4'>Acciones</th>
               </tr>
             </thead>
             <tbody>

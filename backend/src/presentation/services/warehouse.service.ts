@@ -22,7 +22,7 @@ export class WarehouseService {
     async getWarehouses( paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id} : {user: user.id};
+        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id,  isDeleted: false } : {user: user.id,  isDeleted: false };
 
         try {
             

@@ -5,6 +5,7 @@ import ButtonCreate from '../ButtonCreate'
 import Pagination from '../Pagination'
 import { getMovementsThunk } from '../../store/slices/movements.slice'
 import CreateMovement from './CreateMovement'
+import { formatDate } from '../../utils/formatDate'
 
 const DashboardMovements = ({ searchTerm }) => {
 
@@ -52,6 +53,7 @@ const DashboardMovements = ({ searchTerm }) => {
             <thead>
               <tr className='text-left'>
                   <th className='pb-4'>Usuario</th>
+                  <th className='pb-4'>Fecha</th>
                   <th className='pb-4'>Producto</th>
                   <th className='pb-4'>Tipo de Movimiento</th>
                   <th className='pb-4 text-center'>Cantidad - Unidades</th>
@@ -63,10 +65,11 @@ const DashboardMovements = ({ searchTerm }) => {
                 .map((movement) => (
                   <tr key={movement.id} className="border-t hover:bg-slate-50">
                     <td className='py-3'>{movement.user.name}</td>
+                    <td className='py-3'>{formatDate(movement.createdAt)}</td>
                     <td className="py-3">{!movement.product?.isDeleted 
                       ? movement.product?.name 
                       : <p className='font-semibold text-gray-400'>{movement.product?.name}</p>}</td>
-                    <td className="py-3">{movement.movement_type}</td>
+                    <td className="py-3 first-letter:uppercase">{movement.movement_type}</td>
                     <td className="py-3 text-center">{movement.quantity}</td>
                     <td className="py-3">{!movement.warehouse.isDeleted 
                                           ? movement.warehouse.name 

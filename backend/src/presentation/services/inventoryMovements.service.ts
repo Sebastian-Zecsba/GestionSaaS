@@ -17,7 +17,7 @@ export class InventoryMovementsService {
 
         if (movement_type === "entrada") {
             let existOnInventory = await InventoryModel.findOne({ product, warehouse });
-          
+            
             if (!existOnInventory) {
               const createNewInventory = new InventoryModel({
                 product, 

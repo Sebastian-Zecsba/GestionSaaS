@@ -7,6 +7,9 @@ export class ProductService {
 
     async createProduct(productDto: ProductDto, user: UserEntity){
 
+        const productExist = await ProductModel.findOne({sku: productDto.sku, user: user.id});
+        if(productExist) throw CustomError.badRequest(`Codigo SKU existente: ${productDto.sku}`)
+
         try {
             const product = new ProductModel({
                 ...productDto,
@@ -24,11 +27,11 @@ export class ProductService {
     async getProducts(paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id,  isDeleted: false  } : {user: user.id,  isDeleted: false };
+        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id  } : {user: user.id};
 
         try {
             const [ total, products, allProducts] = await Promise.all([
-                ProductModel.countDocuments(query),
+                ProductModel.countDocuments({isDeleted: false, user: user.id}),
                 ProductModel.find(query)
                     .skip((page-1) * limit)
                     .limit(limit)
@@ -49,7 +52,8 @@ export class ProductService {
                         description: product.description,
                         price: product.price,
                         category: product.category,
-                        isDeleted: product.isDeleted
+                        isDeleted: product.isDeleted,
+                        sku: product.sku
                     }
                 }),
                 allProducts: allProducts
@@ -65,8 +69,8 @@ export class ProductService {
             const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
             if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
 
-            const { id, name, description, price, category, isDeleted } = ProductEntity.fromObject(findProductById)
-            return { id, name, description, price, category, isDeleted }
+            const { id, name, description, price, category, isDeleted, sku } = ProductEntity.fromObject(findProductById)
+            return { id, name, description, price, category, isDeleted, sku }
 
         } catch (error) {
             throw CustomError.internalServer(`${error}`)

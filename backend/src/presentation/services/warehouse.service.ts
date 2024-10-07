@@ -27,7 +27,7 @@ export class WarehouseService {
         try {
             
             const [ total, warehouses, allWarehouses] = await Promise.all([
-                WarehouseModel.countDocuments((query)),
+                WarehouseModel.countDocuments({isDeleted: false, user: user.id}),
                 WarehouseModel.find(query)
                     .skip((page -1 ) * limit)
                     .limit(limit),

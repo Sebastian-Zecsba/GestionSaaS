@@ -33,7 +33,7 @@ export class CategoryService{
 
         try {
             const [ total, categories, allCategories ] = await Promise.all([
-                CategoryModel.countDocuments(query),
+                CategoryModel.countDocuments({isDeleted: false, user: user.id}),
                 CategoryModel.find(query)
                     .skip((page - 1) * limit)
                     .limit(limit),

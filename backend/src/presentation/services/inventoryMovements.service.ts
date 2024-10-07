@@ -104,7 +104,7 @@ export class InventoryMovementsService {
             query.product = { $in: productIds };
         }
         const [total, movements] = await Promise.all([
-            InventoryMovementsModel.countDocuments(query),
+            InventoryMovementsModel.countDocuments({isDeleted: false, user: user.id}),
             InventoryMovementsModel.find(query)
                 .skip((page - 1) * limit)
                 .limit(limit)

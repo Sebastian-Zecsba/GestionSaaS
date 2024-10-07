@@ -52,7 +52,7 @@ export class InventoryService{
             };
     
             const [total, inventories] = await Promise.all([
-                InventoryModel.countDocuments(query),
+                InventoryModel.countDocuments({isDeleted: false, user: user.id}),
                 InventoryModel.find(query)
                     .skip((page - 1) * limit)
                     .limit(limit)

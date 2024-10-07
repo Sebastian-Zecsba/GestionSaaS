@@ -57,7 +57,17 @@ const ProductForm = ({register}) => {
                     min="0"
                     onChange={handleNumberChange} 
                 />
-            </div>
+        </div>
+        <div className='flex flex-col gap-3 my-6'>
+                <label className="font-normal text-2xl" htmlFor="string">SKU</label>
+                <input
+                    id="sku"
+                    type="string"
+                    placeholder="Numero de referenccia único del producto"
+                    className="w-full p-3 border-gray-300 border"
+                    {...register("sku")}
+                />
+        </div>
         <div className='flex flex-col gap-3 my-6'>
             <label
                 className="font-normal text-2xl"

@@ -30,15 +30,15 @@ const EditProduct = ({currentPage}) => {
                 name: dataProduct.name,
                 description: dataProduct.description,
                 price: dataProduct.price,
-                stock: dataProduct.stock,
-                category: dataProduct.category ? dataProduct.category : 'select'
+                category: dataProduct.category ? dataProduct.category : 'select',
+                sku: dataProduct.sku
             })
         }
     }, [dataProduct, reset])
 
     const handleEdit = (data) => {
         if(data.category === 'select') throw console.log('Debes seleccionar una categoria valida')
-
+        console.log(data)
         dispatch(upadateProductByIdThunk(modalProduct, data, currentPage))
         navigate(location.pathname, {replace: true})
         reset()

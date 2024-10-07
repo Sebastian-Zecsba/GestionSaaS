@@ -21,7 +21,7 @@ export class WarehouseController {
         const [ error, warehouseDto] = WarehouseDto.create({...req.body})
         if(error) return res.status(400).json({error})
 
-        this.warehouseService.createWarehouse(warehouseDto!, user)
+        this.warehouseService.createWarehouse(warehouseDto!, user!)
             .then(warehouse => res.status(201).json(warehouse))
             .catch(error => this.handleError(error, res))
 
@@ -35,7 +35,7 @@ export class WarehouseController {
         const [ error, paginationDto ] = PaginationDto.create(+page, +limit, searchQuery)
         if(error) return res.status(400).json({error})
 
-        this.warehouseService.getWarehouses(paginationDto!, user)
+        this.warehouseService.getWarehouses(paginationDto!, user!)
             .then(warehouse => res.status(201).json(warehouse))
             .catch(error => this.handleError(error, res))
     }
@@ -44,7 +44,7 @@ export class WarehouseController {
         const user = req.body.user
         const { id } = req.params;
 
-        this.warehouseService.getWarehouseById(id!, user)
+        this.warehouseService.getWarehouseById(id!, user!)
             .then(warehouse => res.status(201).json(warehouse))
             .catch(error => this.handleError(error, res))
     }
@@ -53,7 +53,7 @@ export class WarehouseController {
         const user = req.body.user
         const { id } = req.params
 
-        this.warehouseService.deleteWarehouseById(id!, user)
+        this.warehouseService.deleteWarehouseById(id!, user!)
             .then(warehouse => res.status(201).json(warehouse))
             .catch(error => this.handleError(error, res))
     }
@@ -64,7 +64,7 @@ export class WarehouseController {
         const [error, warehouseDto ] = WarehouseDto.create(req.body)
         if(error) return res.status(400).json({error})
         
-        this.warehouseService.updateWarehouseById(warehouseDto!, id!, user)
+        this.warehouseService.updateWarehouseById(warehouseDto!, id!, user!)
             .then(warehouse => res.status(201).json(warehouse))
             .catch(error => this.handleError(error, res))
     }

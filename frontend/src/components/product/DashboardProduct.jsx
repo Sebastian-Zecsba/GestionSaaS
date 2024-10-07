@@ -13,7 +13,7 @@ const DashboardProduct = ({searchTerm}) => {
   const products = useSelector((state) => state.product) 
 
   const [ currentPage, setCurrentPage] = useState(1)
-
+  console.log(products)
   const fetchProducts = useCallback((page, searchTerm) => {
     const url = `/products?page=${page}&limit=10`
     dispatch(getProductsThunk(url, searchTerm))

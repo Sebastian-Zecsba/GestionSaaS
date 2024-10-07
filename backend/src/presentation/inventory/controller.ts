@@ -23,7 +23,7 @@ export class InventoryController {
         if(error) return res.status(400).json({error})
 
 
-        this.inventoryService.createInventory(inventoryDto!, user)
+        this.inventoryService.createInventory(inventoryDto!, user!)
             .then((inventory) => res.json(inventory))
             .catch(error => this.handleError(error, res))
     }
@@ -36,7 +36,7 @@ export class InventoryController {
         const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery)
         if(error) return res.status(400).json({error})
 
-        this.inventoryService.getInventory(paginationDto!, user)
+        this.inventoryService.getInventory(paginationDto!, user!)
             .then((inventory) => res.json(inventory))
             .catch(error => this.handleError(error, res))
     }
@@ -45,7 +45,7 @@ export class InventoryController {
         const user = req.body.user
         const { id } = req.params
 
-        this.inventoryService.getInvetoryById(id!, user)
+        this.inventoryService.getInvetoryById(id!, user!)
             .then((inventory) => res.json(inventory))
             .catch(error => this.handleError(error, res))
     }
@@ -54,7 +54,7 @@ export class InventoryController {
         const user = req.body.user
         const { id } = req.params
 
-        this.inventoryService.deleteInventoryById(id!, user)
+        this.inventoryService.deleteInventoryById(id!, user!)
             .then((inventory) => res.json(inventory))
             .catch(error => this.handleError(error, res))
     }
@@ -65,7 +65,7 @@ export class InventoryController {
         const [error, updateInventoryDto ] = UpdateInventoryDto.create(req.body)
         if(error) return res.status(400).json({error})
 
-        this.inventoryService.updateInventoryById(updateInventoryDto!, id!, user)
+        this.inventoryService.updateInventoryById(updateInventoryDto!, id!, user!)
             .then((inventory) => res.json(inventory))
             .catch(error => this.handleError(error, res))
     }

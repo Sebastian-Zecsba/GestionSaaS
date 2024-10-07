@@ -13,6 +13,7 @@ const SideBar = () => {
     { title: "Inventario", srcLogo: "inventario", src: "/inventario" },
     { title: "Proveedores", srcLogo: "proveedores", src: "/"},
     { title: "Movimientos", srcLogo: "movimientos", src: "/movimientos" },
+    { title: "Eliminados", srcLogo: "trash", src: "/del"}
   ];
 
   return (

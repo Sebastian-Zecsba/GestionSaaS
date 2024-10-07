@@ -21,7 +21,7 @@ export class ProductController {
         const [error, productDto] = ProductDto.create({...req.body, user: req.body.user.id})
         if(error) return res.status(400).json({error})
 
-        this.productService.createProduct(productDto!, req.body.user)
+        this.productService.createProduct(productDto!, req.body.user!)
             .then((product) => res.status(201).json(product))
             .catch(error => this.handleError(error, res))
     }
@@ -34,7 +34,7 @@ export class ProductController {
         const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})
 
-        this.productService.getProducts(paginationDto!, user)
+        this.productService.getProducts(paginationDto!, user!)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
@@ -43,7 +43,7 @@ export class ProductController {
         const user = req.body.user
         const { id } = req.params;
 
-        this.productService.getProductById(id!, user)
+        this.productService.getProductById(id!, user!)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
@@ -52,7 +52,7 @@ export class ProductController {
         const user = req.body.user
         const { id } = req.params
 
-        this.productService.deleteProduct(id!, user)
+        this.productService.deleteProduct(id!, user!)
             .then((products) => res.status(201).json(products))
             .catch(error => this.handleError(error, res))
     }
@@ -64,7 +64,7 @@ export class ProductController {
         const [error, productDto] = ProductDto.create({...req.body, user: req.body.user.id})
         if(error) return res.status(400).json({error})
 
-        this.productService.updateProduct(productDto!, id!, user)
+        this.productService.updateProduct(productDto!, id!, user!)
             .then((product) => res.status(201).json(product))
             .catch(error => this.handleError(error, res))
     }

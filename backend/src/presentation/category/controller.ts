@@ -36,7 +36,7 @@ export class CategoryController {
         const [error , paginationDto] = PaginationDto.create(+page, +limit, searchQuery || '')
         if(error) return res.status(400).json({error})
 
-        this.categoryService.getCategories(paginationDto!, user)
+        this.categoryService.getCategories(paginationDto!, user!)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
@@ -45,7 +45,7 @@ export class CategoryController {
         const { id } = req.params;
         const user = req.body.user
 
-        this.categoryService.getCategoryByid(id!, user)
+        this.categoryService.getCategoryByid(id!, user!)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
@@ -54,7 +54,7 @@ export class CategoryController {
         const { id } = req.params
         const user = req.body.user
 
-        this.categoryService.deleteCategory(id!, user)
+        this.categoryService.deleteCategory(id!, user!)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }
@@ -66,7 +66,7 @@ export class CategoryController {
         const [ error, categoryDto ] = CategoryDto.create(req.body)
         if(error) return res.status(400).json({error})
 
-        this.categoryService.updatedCategory(categoryDto!, id!, user)
+        this.categoryService.updatedCategory(categoryDto!, id!, user!)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }

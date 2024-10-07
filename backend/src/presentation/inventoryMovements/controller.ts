@@ -33,7 +33,7 @@ export class InventoryMovementsController {
         const [ error, paginationDto] = PaginationDto.create(+page, +limit, searchQuery)
         if(error) return res.status(400).json({error})
 
-        this.inventoryService.getInventoryMovements(paginationDto!, user)
+        this.inventoryService.getInventoryMovements(paginationDto!, user!)
             .then((inventoryMovements) => res.json(inventoryMovements))
             .catch(error => this.handleError(error, res))
 

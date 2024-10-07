@@ -1,9 +1,17 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './layouts/App.layout';
-import { CategoriesView, DashboardView, InventoryView, ProductsView, WarehouseView } from './views';
+import Deletedlayout from './layouts/Deleted.layout';
+import { 
+    CategoriesDeleteView, 
+    CategoriesView, 
+    DashboardView, 
+    DeletedView, 
+    InventoryView, 
+    MovementsView, 
+    ProductsView, 
+    WarehouseView } from './views';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import MovementsView from './views/movements/MovementsView';
 
 function Router() {
   return (
@@ -15,7 +23,13 @@ function Router() {
           <Route path="/productos" element={<ProductsView />} />
           <Route path="/bodegas" element={<WarehouseView />} />
           <Route path="/inventario" element={<InventoryView />} /> 
-          <Route path="/movimientos" element={<MovementsView />} />  
+          <Route path="/movimientos" element={<MovementsView />} />
+
+          <Route element={<Deletedlayout />}>
+            <Route path="/del" element={<DeletedView />} index /> 
+            <Route path="/categorias/del" element={<CategoriesDeleteView />} index /> 
+          </Route>
+
         </Route>
       </Routes>
 

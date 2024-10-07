@@ -3,8 +3,6 @@ import SideBar from '../components/SideBar'
 
 const AppLayout = () => {
 
-  
-
   return (
     <>
       <div className="flex">

@@ -27,7 +27,11 @@ export class ProductService {
     async getProducts(paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id  } : {user: user.id};
+        const query = {
+            user: user.id, 
+            isDeletedDefinitely: false, 
+            ...(searchTerm && { name: { $regex: searchTerm, $options: 'i' } })
+        };
 
         try {
             const [ total, products, allProducts] = await Promise.all([
@@ -88,6 +92,30 @@ export class ProductService {
             
             return result
 
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)
+        }
+    }
+
+    async deleteDefinitelyProduct(productId: string, user: UserEntity){
+        const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
+        if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
+            try {
+                const result = await ProductModel.findOneAndUpdate({_id: productId}, { isDeletedDefinitely: true}, {new: true})
+                return result
+            } catch (error) {
+                throw CustomError.internalServer(`${error}`)
+            }
+    }
+
+    async restoreProduct(productId: string, user: UserEntity){
+        const findProductById = await ProductModel.findOne({ _id: productId, user: user.id });
+        if(!findProductById) throw CustomError.badRequest('Producto no encontrado')
+
+        try { 
+            const result = await ProductModel.findOneAndUpdate({_id: productId}, { isDeleted: false}, {new: true})
+            
+            return result
         } catch (error) {
             throw CustomError.internalServer(`${error}`)
         }

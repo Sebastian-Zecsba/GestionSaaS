@@ -58,6 +58,26 @@ export const deleteProductThunk = (id, currentPage) => async (dispatch) => {
   }
 };
 
+export const deleteDefinitelyProductById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/products/deleteDefinitely/${id}`);
+    dispatch(getProductsThunk());
+    toast.success("Producto eliminado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
+export const restoreProductById = (id) => async (dispatch) => {
+  try {
+    await axios.put(`/products/restore/${id}`);
+    dispatch(getProductsThunk());
+    toast.success("Producto restaurado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
 export const upadateProductByIdThunk =
   (id, data, currentPage) => async (dispatch) => {
     try {

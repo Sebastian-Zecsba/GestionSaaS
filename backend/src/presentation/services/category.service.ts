@@ -29,7 +29,11 @@ export class CategoryService{
         
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id, isDeleted: false } : { user: user.id, isDeleted: false };
+        const query = {
+            user: user.id, 
+            isDeletedDefinitely: false, 
+            ...(searchTerm && { name: { $regex: searchTerm, $options: 'i' } })
+        };
 
         try {
             const [ total, categories, allCategories ] = await Promise.all([
@@ -89,6 +93,35 @@ export class CategoryService{
             } catch (error) {
                 throw CustomError.internalServer(`${error}`)            
             }
+    }
+
+    async deleteDefinitelyCategory(categoryId: string, user: UserEntity){
+
+        const existCategory = await CategoryModel.findOne({ _id: categoryId, user: user.id });
+        if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
+
+            try {
+                const result = await CategoryModel.findOneAndUpdate({_id: categoryId}, {isDeletedDefinitely: true}, { new: true})
+
+                return result
+            } catch (error) {
+                throw CustomError.internalServer(`${error}`)            
+            }
+    }
+
+    async restoreCategory(categoryId: string, user: UserEntity){
+
+        const existCategory = await CategoryModel.findOne({ _id: categoryId, user: user.id });
+        if(!existCategory) throw CustomError.badRequest('Categoria no encontrada')
+
+            try {
+                const result = await CategoryModel.findOneAndUpdate({_id: categoryId}, {isDeleted: false}, { new: true})
+
+                return result
+            } catch (error) {
+                throw CustomError.internalServer(`${error}`)            
+            }
+
     }
 
     async updatedCategory(categoryDto: CategoryDto, categoryId: string, user: UserEntity){

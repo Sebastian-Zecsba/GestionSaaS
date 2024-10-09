@@ -59,6 +59,24 @@ export class InventoryController {
             .catch(error => this.handleError(error, res))
     }
 
+    deleteDefinitelyInventoryById = (req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.inventoryService.deleteDefinitelyInventoryById(id!, user!)
+            .then((inventory) => res.json(inventory))
+            .catch(error => this.handleError(error, res))
+    }
+
+    restoreInventoryById = (req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.inventoryService.restoreInventoryById(id!, user!)
+            .then((inventory) => res.json(inventory))
+            .catch(error => this.handleError(error, res))
+    }
+
     updateInventoryById = (req: Request, res: Response) => {
         const user = req.body.user
         const { id } = req.params

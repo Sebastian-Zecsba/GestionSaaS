@@ -24,7 +24,7 @@ const CategoriesView = () => {
             </section>
 
             <section className='flex justify-center bg-[#EDEDED] rounded-[10px] items-center mr-20 w-96 border-2 border-gray-400'>
-                <img src="./src/assets/lupa.svg" className='w-8 h-8 mx-2' />
+                <img src="./assets/lupa.svg" className='w-8 h-8 mx-2' />
                 <input 
                     className='bg-[#EDEDED] text-[#a8a6a7] w-full focus:outline-none text-lg' 
                     type="text" 

@@ -43,7 +43,7 @@ const DashboardWarehouse = ({searchTerm}) => {
 
   return (
     <div className="p-6 bg-white rounded-lg shadow-md mt-6">
-      <h2 className="text-3xl font-bold mb-6">Lista de Productos</h2>
+      <h2 className="text-3xl font-bold mb-6">Lista de las Bodegas</h2>
 
         {warehouseFiltered?.length > 0 ? (
           <table className='w-full table-auto'>

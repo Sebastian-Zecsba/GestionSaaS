@@ -15,7 +15,9 @@ export class CategoryRoutes {
         
         router.get('/:id', [AuthMiddleware.validateJWT], controller.getCategoryById)
         router.delete('/:id', [AuthMiddleware.validateJWT], controller.deleteCategoryById)
+        router.delete('/deleteDefinitely/:id', [AuthMiddleware.validateJWT], controller.deleteDefinitelyCategory)
         router.put('/:id', [AuthMiddleware.validateJWT], controller.updatedCategoryById)
+        router.put('/restore/:id', [AuthMiddleware.validateJWT], controller.restoreCategory)
 
 
         return router

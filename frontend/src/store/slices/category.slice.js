@@ -59,6 +59,26 @@ export const deleteCategoryById = (id, currentPage) => async (dispatch) => {
   }
 };
 
+export const deleteDefinitelyCategoryById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/categories/deleteDefinitely/${id}`);
+    dispatch(getCategoriesThunk());
+    toast.success("Categoria eliminada exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
+export const restoreCategoryById = (id) => async (dispatch) => {
+  try {
+    await axios.put(`/categories/restore/${id}`);
+    dispatch(getCategoriesThunk());
+    toast.success("Categoria restaurada exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
 export const upatedCategoryById =
   (info, id, currentPage) => async (dispatch) => {
     try {

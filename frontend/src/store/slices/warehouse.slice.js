@@ -59,6 +59,26 @@ export const deleteWarehouseById = (id, currentPage) => async (dispatch) => {
   }
 };
 
+export const deleteDefinitelyWarehouseById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/warehouses/deleteDefinitely/${id}`);
+    dispatch(getWarehousesThunk());
+    toast.success("Bodega eliminado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
+export const restoreWarehouseById = (id) => async (dispatch) => {
+  try {
+    await axios.put(`/warehouses/restore/${id}`);
+    dispatch(getWarehousesThunk());
+    toast.success("Bodega restaurado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
 export const upadateWarehouseByIdThunk =
   (id, data, currentPage) => async (dispatch) => {
     try {

@@ -6,9 +6,12 @@ import {
     CategoriesView, 
     DashboardView, 
     DeletedView, 
+    InventoryDeleteView, 
     InventoryView, 
     MovementsView, 
+    ProductsDeleteView, 
     ProductsView, 
+    WarehouseDeleteView, 
     WarehouseView } from './views';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -25,9 +28,12 @@ function Router() {
           <Route path="/inventario" element={<InventoryView />} /> 
           <Route path="/movimientos" element={<MovementsView />} />
 
-          <Route element={<Deletedlayout />}>
-            <Route path="/del" element={<DeletedView />} index /> 
-            <Route path="/categorias/del" element={<CategoriesDeleteView />} index /> 
+          <Route path='/del' element={<Deletedlayout />}>
+            <Route path="/del/categorias" element={<CategoriesDeleteView />} /> 
+            <Route path="/del/productos" element={<ProductsDeleteView />} /> 
+            <Route path="/del/bodegas" element={<WarehouseDeleteView />} /> 
+            <Route path="/del/inventarios" element={<InventoryDeleteView />} /> 
+            <Route path="/del/proveedores" element={<p>Aca iran proveedores pero no tenemos aun. JEJE</p>} /> 
           </Route>
 
         </Route>

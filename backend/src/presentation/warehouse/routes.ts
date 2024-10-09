@@ -15,7 +15,9 @@ export class WarehouseRoutes {
         router.get('/', [AuthMiddleware.validateJWT], warehouseController.getWarehouses)
         router.get('/:id', [AuthMiddleware.validateJWT], warehouseController.getWarehousesById)
         router.delete('/:id', [AuthMiddleware.validateJWT], warehouseController.deleteWarehouseById)
+        router.delete('/deleteDefinitely/:id', [AuthMiddleware.validateJWT], warehouseController.deleteDefinitelyWarehouseById)
         router.put('/:id', [AuthMiddleware.validateJWT], warehouseController.updateWarehouseById)
+        router.put('/restore/:id', [AuthMiddleware.validateJWT], warehouseController.restoreWarehouseById)
 
         return router
     }

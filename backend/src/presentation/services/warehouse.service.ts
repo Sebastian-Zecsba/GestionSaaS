@@ -22,7 +22,11 @@ export class WarehouseService {
     async getWarehouses( paginationDto: PaginationDto, user: UserEntity){
         const { page, limit, searchTerm } = paginationDto;
 
-        const query = searchTerm ? {name: {$regex: searchTerm, $options: 'i'}, user: user.id,  isDeleted: false } : {user: user.id,  isDeleted: false };
+        const query = {
+            user: user.id, 
+            isDeletedDefinitely: false, 
+            ...(searchTerm && { name: { $regex: searchTerm, $options: 'i' } })
+        };
 
         try {
             
@@ -76,6 +80,35 @@ export class WarehouseService {
         try {
             
             const result = await WarehouseModel.findOneAndUpdate({_id: warehouseId}, { isDeleted: true}, {new: true})
+            
+            return result
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)    
+        }
+    }
+
+    async deleteDefinitelyWarehouseById(warehouseId: string, user: UserEntity){
+
+        const warehouseExist = await WarehouseModel.findOne({ _id: warehouseId, user: user.id });
+        if(!warehouseExist) throw CustomError.badRequest('Bodega no registrada')
+
+        try {
+            
+            const result = await WarehouseModel.findOneAndUpdate({_id: warehouseId}, { isDeletedDefinitely: true}, {new: true})
+            
+            return result
+        } catch (error) {
+            throw CustomError.internalServer(`${error}`)    
+        }
+    }
+
+    async restoreWarehouseById(warehouseId: string, user: UserEntity){
+        const warehouseExist = await WarehouseModel.findOne({ _id: warehouseId, user: user.id });
+        if(!warehouseExist) throw CustomError.badRequest('Bodega no registrada')
+
+        try {
+            
+            const result = await WarehouseModel.findOneAndUpdate({_id: warehouseId}, { isDeleted: false}, {new: true})
             
             return result
         } catch (error) {

@@ -31,6 +31,10 @@ const inventoryMovementsSchema = new Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    isDeletedDefinitely: {
+        type: Boolean,
+        default: false
     }
 })
 

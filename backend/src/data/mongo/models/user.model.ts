@@ -22,6 +22,10 @@ const userSchema = new mongoose.Schema({
     isDeleted: {
         type: Boolean,
         default: false
+    },
+    isDeletedDefinitely: {
+        type: Boolean,
+        default: false
     }
 })
 

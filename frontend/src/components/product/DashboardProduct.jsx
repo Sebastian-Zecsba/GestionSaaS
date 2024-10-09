@@ -49,6 +49,7 @@ const DashboardProduct = ({searchTerm}) => {
           <table className='w-full table-auto'>
             <thead>
               <tr className='text-left'>
+                  <th className='pb-4'>SKU</th>
                   <th className='pb-4'>Nombre</th>
                   <th className='pb-4'>Descripción</th>
                   <th className='pb-4'>Precio</th>
@@ -60,6 +61,7 @@ const DashboardProduct = ({searchTerm}) => {
               {productsFiltered.filter(product => !product.isDeleted)
                 .map((product) => (
                   <tr key={product.id} className="border-t hover:bg-slate-50">
+                    <td className="py-3">{product.sku}</td>
                     <td className="py-3">{product.name}</td>
                     <td className="py-3">{product.description}</td>
                     <td className="py-3">{product.price.toLocaleString('es-ES')}</td>

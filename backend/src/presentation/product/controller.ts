@@ -57,6 +57,24 @@ export class ProductController {
             .catch(error => this.handleError(error, res))
     }
 
+    deleteDefinitelyProduct = async(req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.productService.deleteDefinitelyProduct(id!, user!)
+            .then((products) => res.status(201).json(products))
+            .catch(error => this.handleError(error, res))
+    }
+
+    restoreProductById = async(req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.productService.restoreProduct(id!, user!)
+            .then((products) => res.status(201).json(products))
+            .catch(error => this.handleError(error, res))
+    }
+
     updateProduct = async(req: Request, res: Response) => {
         const user = req.body.user
         const { id } = req.params;

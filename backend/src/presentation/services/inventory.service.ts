@@ -37,9 +37,9 @@ export class InventoryService{
     async getInventory(paginationDto: PaginationDto, user: UserEntity) {
         const { page, limit, searchTerm } = paginationDto;
     
-        let productQuery = {};
-
-        productQuery = searchTerm ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id,  isDeleted: false  } : {user: user.id,  isDeleted: false };
+        let productQuery = searchTerm
+        ? { name: { $regex: searchTerm, $options: 'i' }, user: user.id, isDeleted: false, isDeletedDefinitely: false }
+        : { user: user.id, isDeleted: false, isDeletedDefinitely: false };
     
         try {
             const matchingProducts = await ProductModel.find(productQuery).select('_id');
@@ -48,7 +48,8 @@ export class InventoryService{
     
             const query = {
                 product: productIds.length > 0 ? { $in: productIds } : { $exists: true },
-                user: user.id
+                user: user.id,
+                isDeleted: false
             };
     
             const [total, inventories] = await Promise.all([
@@ -78,8 +79,6 @@ export class InventoryService{
             throw CustomError.badRequest(`${error}`);
         }
     }
-    
-    
 
     async getInvetoryById(inventoryId: string, user: UserEntity){
 
@@ -103,6 +102,34 @@ export class InventoryService{
 
         try {
             const result = await InventoryModel.findOneAndUpdate({_id: inventoryId}, { isDeleted: true}, {new: true})
+            
+            return result
+        } catch (error) {
+            throw CustomError.badRequest(`${error}`)
+        }
+    }
+
+    async deleteDefinitelyInventoryById(inventoryId: string, user: UserEntity){
+
+        const inventoryExist = await InventoryModel.findOne({ _id: inventoryId, user: user.id })
+        if(!inventoryExist) throw CustomError.badRequest('No se encontro Inventario')
+
+        try {
+            const result = await InventoryModel.findOneAndUpdate({_id: inventoryId}, { isDeletedDefinitely: true}, {new: true})
+            
+            return result
+        } catch (error) {
+            throw CustomError.badRequest(`${error}`)
+        }
+    }
+
+    async restoreInventoryById(inventoryId: string, user: UserEntity){
+
+        const inventoryExist = await InventoryModel.findOne({ _id: inventoryId, user: user.id })
+        if(!inventoryExist) throw CustomError.badRequest('No se encontro Inventario')
+
+        try {
+            const result = await InventoryModel.findOneAndUpdate({_id: inventoryId}, { isDeleted: false}, {new: true})
             
             return result
         } catch (error) {

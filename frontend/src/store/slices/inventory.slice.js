@@ -58,6 +58,26 @@ export const deleteInventoryByIdThunk =
     }
   };
 
+export const deleteDefinitelyInventoryById = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`/inventories/deleteDefinitely/${id}`);
+    dispatch(getInventoryThunk());
+    toast.success("Inventario eliminado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
+export const restoreInventoryById = (id) => async (dispatch) => {
+  try {
+    await axios.put(`/inventories/restore/${id}`);
+    dispatch(getInventoryThunk());
+    toast.success("Inventario restaurado exitosamente");
+  } catch (error) {
+    toast.error(error.response.data.error);
+  }
+};
+
 export const updateInventoryByIdThunk =
   (id, inventory, currentPage) => async (dispatch) => {
     try {

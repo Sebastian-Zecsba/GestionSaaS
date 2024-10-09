@@ -50,7 +50,7 @@ const  DashboardView = () => {
                         className='bg-[#EDEDED] p-5 rounded-md w-96 shadow hover:shadow-lg transition ease-in-out hover:scale-105 duration-150'>
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-semibold'>{element.title}</h1>
-                            <img src={`./src/assets/${element.srcLogo}.png`} className='w-10 h-10' />
+                            <img src={`./assets/${element.srcLogo}.png`} className='w-10 h-10' />
                         </div>
                         <div className='mt-14'>
                             <h2 className='text-3xl font-semibold'>{element.howMany}</h2>

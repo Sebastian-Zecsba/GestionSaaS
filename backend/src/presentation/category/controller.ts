@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { CategoryDto, CustomError, PaginationDto } from "../../domain";
 import { CategoryService } from "../services/category.service";
 
-export class CategoryController { 
+export class CategoryController {
 
     constructor(
         private readonly categoryService: CategoryService
@@ -55,6 +55,24 @@ export class CategoryController {
         const user = req.body.user
 
         this.categoryService.deleteCategory(id!, user!)
+            .then((category) => res.json(category))
+            .catch(error => this.handleError(error, res))
+    }
+
+    deleteDefinitelyCategory = (req: Request, res: Response) => {
+        const { id } = req.params
+        const user = req.body.user
+
+        this.categoryService.deleteDefinitelyCategory(id!, user!)
+            .then((category) => res.json(category))
+            .catch(error => this.handleError(error, res))
+    }
+
+    restoreCategory = (req: Request, res: Response) => {
+        const { id } = req.params
+        const user = req.body.user
+
+        this.categoryService.restoreCategory(id!, user!)
             .then((category) => res.json(category))
             .catch(error => this.handleError(error, res))
     }

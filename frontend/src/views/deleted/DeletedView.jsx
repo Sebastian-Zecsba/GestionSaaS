@@ -5,8 +5,7 @@ import { Header } from '../../components'
 const DeletedView = () => {
 
   return (
-    <div className=''>
-
+    <div>
         <main> 
             <p>Aca ira la pantalla de eliminados</p>
         </main>

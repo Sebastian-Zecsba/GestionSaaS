@@ -58,6 +58,24 @@ export class WarehouseController {
             .catch(error => this.handleError(error, res))
     }
 
+    deleteDefinitelyWarehouseById = async(req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.warehouseService.deleteDefinitelyWarehouseById(id!, user!)
+            .then(warehouse => res.status(201).json(warehouse))
+            .catch(error => this.handleError(error, res))
+    }
+
+    restoreWarehouseById = async(req: Request, res: Response) => {
+        const user = req.body.user
+        const { id } = req.params
+
+        this.warehouseService.restoreWarehouseById(id!, user!)
+            .then(warehouse => res.status(201).json(warehouse))
+            .catch(error => this.handleError(error, res))
+    }
+
     updateWarehouseById = async(req: Request, res: Response) => {
         const user = req.body.user
         const { id } = req.params

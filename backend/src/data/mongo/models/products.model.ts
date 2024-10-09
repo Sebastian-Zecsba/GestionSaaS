@@ -26,6 +26,10 @@ const product = new mongoose.Schema({
         type: Boolean,
         default: false
     },
+    isDeletedDefinitely: {
+        type: Boolean,
+        default: false
+    },
     sku: {
         type: String,
         required: [true, 'Stock Keeping Unit is required']

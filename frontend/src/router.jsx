@@ -11,6 +11,8 @@ import {
     MovementsView, 
     ProductsDeleteView, 
     ProductsView, 
+    SupplierDeletedView, 
+    SuppliersView, 
     WarehouseDeleteView, 
     WarehouseView } from './views';
 import { ToastContainer } from 'react-toastify';
@@ -26,6 +28,7 @@ function Router() {
           <Route path="/productos" element={<ProductsView />} />
           <Route path="/bodegas" element={<WarehouseView />} />
           <Route path="/inventario" element={<InventoryView />} /> 
+          <Route path="/proveedores" element={<SuppliersView />} /> 
           <Route path="/movimientos" element={<MovementsView />} />
 
           <Route path='/del' element={<Deletedlayout />}>
@@ -33,7 +36,7 @@ function Router() {
             <Route path="/del/productos" element={<ProductsDeleteView />} /> 
             <Route path="/del/bodegas" element={<WarehouseDeleteView />} /> 
             <Route path="/del/inventarios" element={<InventoryDeleteView />} /> 
-            <Route path="/del/proveedores" element={<p>Aca iran proveedores pero no tenemos aun. JEJE</p>} /> 
+            <Route path="/del/proveedores" element={<SupplierDeletedView />} /> 
           </Route>
 
         </Route>

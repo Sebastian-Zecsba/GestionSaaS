@@ -7,7 +7,7 @@ export class ProductService {
 
     async createProduct(productDto: ProductDto, user: UserEntity){
 
-        const productExist = await ProductModel.findOne({sku: productDto.sku, user: user.id});
+        const productExist = await ProductModel.findOne({sku: productDto.sku, user: user.id, isDeletedDefinitely: false});
         if(productExist) throw CustomError.badRequest(`Codigo SKU existente: ${productDto.sku}`)
 
         try {

@@ -9,6 +9,7 @@ import { getProductsThunk } from '../store/slices/product.slice';
 import { getWarehousesThunk } from '../store/slices/warehouse.slice';
 import { getInventoryThunk } from '../store/slices/inventory.slice';
 import { getMovementsThunk } from '../store/slices/movements.slice';
+import { getSuppliersThunk } from '../store/slices/supplier.slice';
 
 const  DashboardView = () => {
 
@@ -18,6 +19,7 @@ const  DashboardView = () => {
     const warehouseInformation = useSelector((state) => state.warehouse.data.total);
     const inventoryInformation = useSelector((state) => state.inventory.data.total);
     const movementInformation = useSelector((state) => state.movement.data.total);
+    const supplierInformation = useSelector((state) => state.supplier.data.total);
 
     useEffect(() => {
       dispatch(getCategoriesThunk());
@@ -25,6 +27,7 @@ const  DashboardView = () => {
       dispatch(getWarehousesThunk());
       dispatch(getInventoryThunk());
       dispatch(getMovementsThunk());
+      dispatch(getSuppliersThunk())
     }, []);
 
     const Menus = [
@@ -32,7 +35,7 @@ const  DashboardView = () => {
         { title: "Productos", srcLogo: "productos", src: "/productos", howMany: productInformation },
         { title: "Bogedas", srcLogo: "bodegas", src: "/bodegas", howMany: warehouseInformation },
         { title: "Inventario", srcLogo: "inventario", src: "/inventario", howMany: inventoryInformation },
-        { title: "Proveedores", srcLogo: "proveedores", src: "/", howMany: categoryInformation},
+        { title: "Proveedores", srcLogo: "proveedores", src: "/proveedores", howMany: supplierInformation},
         { title: "Movimientos", srcLogo: "movimientos", src: "/movimientos", howMany: movementInformation }
       ];
 

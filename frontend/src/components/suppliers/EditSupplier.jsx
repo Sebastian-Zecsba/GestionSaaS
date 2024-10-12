@@ -1,40 +1,42 @@
+import React, { useEffect } from 'react'
 import { Dialog, DialogPanel } from '@headlessui/react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { useDispatch, useSelector } from 'react-redux'
-import { getWarehouseById, upadateWarehouseByIdThunk } from '../../store/slices/warehouse.slice'
-import { useEffect } from 'react'
-import WarehouseForm from './WarehouseForm'
+import { getSupplierByIdThunk, upadateSupplierByIdThunk } from '../../store/slices/supplier.slice'
+import SupplierForm from './SupplierForm'
 
-const EditWarehouse = ({currentPage}) => {
+const EditSupplier = ({currentPage}) => {
 
     const navigate = useNavigate()
     const location = useLocation()
     const dispatch = useDispatch()
     const queryParams = new URLSearchParams(location.search)
-    const modalWarehouse = queryParams.get('editarBodega')
+    const modalWarehouse = queryParams.get('editarProveedor')
     const show = modalWarehouse ? true : false
 
-    const {handleSubmit, register, reset } = useForm()
-    const dataWarehouse = useSelector((state) => state.warehouse.warehouseById)
+    const {  handleSubmit, register, reset } = useForm()
+    const dataSupplier = useSelector((state) => state.supplier.supplierById)
 
     useEffect(() => {
-       if(modalWarehouse){
-           dispatch(getWarehouseById(modalWarehouse))
-       }
+        if(modalWarehouse){
+            dispatch(getSupplierByIdThunk(modalWarehouse))
+        }
     }, [show])
 
     useEffect(() => {
-        if(dataWarehouse){
+        if(dataSupplier){
             reset({
-                name: dataWarehouse.name,
-                address: dataWarehouse.address
+                name: dataSupplier.name,
+                phone: dataSupplier.phone,
+                email: dataSupplier.email,
+                address: dataSupplier.address
             })
         }
-    }, [dataWarehouse, reset])
+    }, [dataSupplier, reset])
 
     const handleEdit = (data) => {
-        dispatch(upadateWarehouseByIdThunk(modalWarehouse, data, currentPage))
+        dispatch(upadateSupplierByIdThunk(modalWarehouse, data, currentPage))
         navigate(location.pathname, {replace: true})
         reset()
     }
@@ -43,6 +45,7 @@ const EditWarehouse = ({currentPage}) => {
         navigate(location.pathname, {replace: true})
         reset()
     }
+
   return (
     <>
             <Dialog 
@@ -55,7 +58,7 @@ const EditWarehouse = ({currentPage}) => {
                     <DialogPanel className="w-full max-w-md transform flex flex-col gap-6 rounded-lg bg-white p-6 text-left align-middle shadow-xl transition-all duration-300 ease-in-out data-[state=open]:animate-in data-[state=open]:fade-in-90 data-[state=open]:slide-in-from-bottom-10 sm:max-w-xl">
 
                         <form onSubmit={handleSubmit(handleEdit)}>
-                            <WarehouseForm 
+                            <SupplierForm 
                                 register={register}
                             />
                             <button
@@ -73,4 +76,4 @@ const EditWarehouse = ({currentPage}) => {
   )
 }
 
-export default EditWarehouse
+export default EditSupplier

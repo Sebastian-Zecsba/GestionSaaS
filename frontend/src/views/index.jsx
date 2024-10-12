@@ -4,8 +4,12 @@ export { default as ProductsView } from './products/ProductsView'
 export { default as WarehouseView } from './warehouses/WarehousesView'
 export { default as InventoryView } from './inventory/InventoryView'
 export { default as MovementsView } from './movements/MovementsView'
+export { default as SuppliersView } from './suppliers/SuppliersView'
+
+
 export { default as DeletedView } from './deleted/DeletedView'
 export { default as CategoriesDeleteView } from './categories/CategoriesDeletedView'
 export { default as ProductsDeleteView } from './products/ProductsDeletedView'
 export { default as WarehouseDeleteView } from './warehouses/WarehousesDeletedView'
 export { default as InventoryDeleteView } from './inventory/InventoryDeletedView'
+export { default as SupplierDeletedView } from './suppliers/SupplierDeletedView'

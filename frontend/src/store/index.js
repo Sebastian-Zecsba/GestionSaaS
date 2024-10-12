@@ -5,6 +5,7 @@ import productSlice from './slices/product.slice'
 import warehouseSlice from './slices/warehouse.slice'
 import inventorySlice from './slices/inventory.slice'
 import movementSlice from './slices/movements.slice'
+import supplierSlice from './slices/supplier.slice'
 
 
 export default configureStore({
@@ -14,6 +15,7 @@ export default configureStore({
     product: productSlice,
     warehouse: warehouseSlice,
     inventory: inventorySlice,
-    movement: movementSlice
+    movement: movementSlice,
+    supplier: supplierSlice
   }
 })

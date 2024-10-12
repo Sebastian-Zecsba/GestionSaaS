@@ -6,6 +6,9 @@ export class WarehouseService {
 
     async createWarehouse( createWarehouse: WarehouseDto, user: UserEntity ){
 
+        const existWarehouse = await WarehouseModel.findOne({ name: createWarehouse.name, isDeletedDefinitely: false, user: user.id });
+        if(existWarehouse) throw CustomError.badRequest('Bodega ya existe')
+
         try {
             const create = new WarehouseModel({
                 ...createWarehouse,

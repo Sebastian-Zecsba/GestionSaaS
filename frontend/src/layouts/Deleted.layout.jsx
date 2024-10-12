@@ -6,6 +6,7 @@ import { getCategoriesThunk } from '../store/slices/category.slice';
 import { getProductsThunk } from '../store/slices/product.slice';
 import { getWarehousesThunk } from '../store/slices/warehouse.slice';
 import { getInventoryThunk } from '../store/slices/inventory.slice';
+import { getSuppliersThunk } from '../store/slices/supplier.slice';
 
 const Deletedlayout = () => {
 
@@ -14,19 +15,21 @@ const Deletedlayout = () => {
     const productInformation = useSelector((state) => state.product.data.products?.filter(product => product.isDeleted).length);
     const warehouseInformation = useSelector((state) => state.warehouse.data.warehouses?.filter(warehouse => warehouse.isDeleted).length);
     const inventoryInformation = useSelector((state) => state.inventory.data.inventories?.filter(inventory => inventory.isDeleted).length);
+    const suppliersInformation = useSelector((state) => state.supplier.data.suppliers?.filter(supplier => supplier.isDeleted).length);
 
     useEffect(() => {
       dispatch(getCategoriesThunk());
       dispatch(getProductsThunk());
       dispatch(getWarehousesThunk());
       dispatch(getInventoryThunk());
+      dispatch(getSuppliersThunk())
     }, []);
 
   const routes = [
     { path: '/del/categorias', title: 'categorias', count: categoryInformation },
     { path: '/del/productos', title: 'productos', count: productInformation },
     { path: '/del/bodegas', title: 'bodegas', count: warehouseInformation },
-    { path: '/del/proveedores', title: 'proveedores', count: categoryInformation },
+    { path: '/del/proveedores', title: 'proveedores', count: suppliersInformation },
     { path: '/del/inventarios', title: 'inventarios', count: inventoryInformation }
   ]
 

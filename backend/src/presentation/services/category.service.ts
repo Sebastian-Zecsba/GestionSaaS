@@ -6,6 +6,9 @@ export class CategoryService{
     constructor(){}
 
     async createCategoty(createCategory: CategoryDto, user: UserEntity){
+
+        const existCategory = await CategoryModel.findOne({ name: createCategory.name, isDeletedDefinitely: false, user: user.id });
+        if(existCategory) throw CustomError.badRequest('Categoria ya existe')
         
         try {
             

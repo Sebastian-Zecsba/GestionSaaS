@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { deleteDefinitelyProductById, getProductsThunk, restoreProductById } from '../../store/slices/product.slice';
-import { toast } from 'react-toastify';
 
 const ProductsDeletedView = () => {
 

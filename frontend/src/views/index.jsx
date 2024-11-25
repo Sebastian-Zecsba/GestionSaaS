@@ -5,7 +5,8 @@ export { default as WarehouseView } from './warehouses/WarehousesView'
 export { default as InventoryView } from './inventory/InventoryView'
 export { default as MovementsView } from './movements/MovementsView'
 export { default as SuppliersView } from './suppliers/SuppliersView'
-
+export { default as LoginView } from './user/LoginView'
+export { default as RegisterView } from './user/RegisterView'
 
 export { default as DeletedView } from './deleted/DeletedView'
 export { default as CategoriesDeleteView } from './categories/CategoriesDeletedView'

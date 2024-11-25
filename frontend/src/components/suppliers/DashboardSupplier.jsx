@@ -50,14 +50,15 @@ const DashboardSupplier = ({searchTerm}) => {
           <h2 className="text-3xl font-bold mb-6">Lista de las Bodegas</h2>
     
             {supplierFiltered?.length > 0 ? (
-              <table className='w-full table-auto'>
+             <div className='overflow-x-auto'>
+               <table className="w-full table-fixed border-collapse">
                 <thead>
                   <tr className='text-left'>
-                      <th className='pb-4 w-3/12'>Nombre</th>
-                      <th className='pb-4 w-3/12'>Dirección</th>
-                      <th className='pb-4 w-2/12'>Correo</th>
-                      <th className='pb-4 w-2/12'>Telefono</th>
-                      <th className='pb-4 w-3/12'>Acciones</th>
+                      <th className='pb-4 w-[150px] sm:w-[200px] min-w-[150px] sm:min-w-[200px] lg:w-3/12 whitespace-nowrap'>Nombre</th>
+                      <th className='pb-4 w-[150px] sm:w-[200px] min-w-[150px] sm:min-w-[200px] whitespace-nowrap md:w-2/12 lg:w-3/12'>Dirección</th>
+                      <th className='pb-4 w-[250px] sm:w-[200px] min-w-[150px] sm:min-w-[200px] whitespace-nowrap md:w-[200px] lg:min-w-[220px] lg:w-5/12 '>Correo</th>
+                      <th className='pb-4 w-[150px] sm:w-[200px] min-w-[150px] sm:min-w-[200px] whitespace-nowrap md:w-2/12 lg:w-2/12'>Telefono</th>
+                      <th className='pb-4 lg:w-3/12'>Acciones</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -68,7 +69,7 @@ const DashboardSupplier = ({searchTerm}) => {
                         <td className="py-3">{supplier.address}</td>
                         <td className="py-3">{supplier.email}</td>
                         <td className="py-3">{supplier.phone}</td>
-                        <td>
+                        <td className='py-3 flex flex-row'>
                           <button
                           onClick={() => navigate(`?editarProveedor=${supplier.id}`)}
                           className="mr-3 bg-blue-500 hover:bg-blue-700 text-white px-3 p-1 rounded-[10px]"
@@ -85,6 +86,7 @@ const DashboardSupplier = ({searchTerm}) => {
                     ))}
                 </tbody>
               </table>
+             </div>
             ) : (
               <div className="flex gap-10 py-4 items-center">
                 <ButtonCreate

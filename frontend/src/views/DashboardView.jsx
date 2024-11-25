@@ -10,6 +10,7 @@ import { getWarehousesThunk } from '../store/slices/warehouse.slice';
 import { getInventoryThunk } from '../store/slices/inventory.slice';
 import { getMovementsThunk } from '../store/slices/movements.slice';
 import { getSuppliersThunk } from '../store/slices/supplier.slice';
+import User from '../components/user/User';
 
 const  DashboardView = () => {
 
@@ -40,17 +41,20 @@ const  DashboardView = () => {
       ];
 
   return (
-    <div className='ml-16'>
-        <div className='bg-[#EDEDED] px-5 py-4 rounded-[10px]'>
+    <div className='-ml-5 sm:ml-16'>
+        <div className='bg-[#EDEDED] min-w-72  px-5 py-4 rounded-[10px] flex flex-col justify-center sm:flex-row sm:justify-between'>
             <Header 
                 title="Dashboard"
             />
+
+            <User />
+
         </div>
         <main className='flex flex-wrap gap-8 mt-24 justify-evenly'>  
             {Menus.map((element, index) => (
                 <Link to={element.src} key={index}>
                     <section 
-                        className='bg-[#EDEDED] p-5 rounded-md w-96 shadow hover:shadow-lg transition ease-in-out hover:scale-105 duration-150'>
+                        className='bg-[#EDEDED] p-5 rounded-md w-72 sm:w-96 shadow hover:shadow-lg transition ease-in-out hover:scale-105 duration-150'>
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-semibold'>{element.title}</h1>
                             <img src={`./assets/${element.srcLogo}.png`} className='w-10 h-10' />

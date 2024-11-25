@@ -1,16 +1,18 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import AppLayout from './layouts/App.layout';
 import Deletedlayout from './layouts/Deleted.layout';
+import User from './layouts/User.loyout';
 import { 
     CategoriesDeleteView, 
     CategoriesView, 
     DashboardView, 
-    DeletedView, 
     InventoryDeleteView, 
     InventoryView, 
+    LoginView, 
     MovementsView, 
     ProductsDeleteView, 
     ProductsView, 
+    RegisterView, 
     SupplierDeletedView, 
     SuppliersView, 
     WarehouseDeleteView, 
@@ -39,6 +41,12 @@ function Router() {
             <Route path="/del/proveedores" element={<SupplierDeletedView />} /> 
           </Route>
 
+        </Route>
+
+        <Route element={<User />}>
+          <Route path='/login' element={<LoginView />} />
+          <Route path='/registrar' element={<RegisterView />} />
+          {/* <Route path='/olivde-contraseña' element={<p>EL otro del otro</p>} /> */}
         </Route>
       </Routes>
 

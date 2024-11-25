@@ -17,7 +17,7 @@ export class AuthMiddleware {
         try {
             
             const payload = await JwtAdapter.validateToken<{id: string}>(token)
-            if(!payload) return res.status(401).json({error: 'Invalid token'})
+            if(!payload) return res.status(401).json({error: 'Token incorrecto, iniciar sesión de nuevo'})
             
             const user = await UserModel.findById(payload.id);
             if(!user) return res.status(401).json({error: 'Invalid token - user'})

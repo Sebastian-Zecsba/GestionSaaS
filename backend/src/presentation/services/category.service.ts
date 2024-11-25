@@ -34,7 +34,7 @@ export class CategoryService{
 
         const query = {
             user: user.id, 
-            isDeletedDefinitely: false, 
+            isDeletedDefinitely: false,
             ...(searchTerm && { name: { $regex: searchTerm, $options: 'i' } })
         };
 

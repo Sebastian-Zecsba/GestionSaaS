@@ -15,8 +15,7 @@ export const categorySlice = createSlice({
   },
 });
 
-export const getCategoriesThunk =
-  (url = "/categories", searchTerm = "") =>
+export const getCategoriesThunk = (url = "/categories", searchTerm = "") =>
   async (dispatch) => {
     try {
       const query = searchTerm ? `${url}&search=${searchTerm}` : url;
@@ -36,8 +35,7 @@ export const getCategoryById = (id) => async (dispatch) => {
   }
 };
 
-export const createCategoryThunk =
-  (category, currentPage) => async (dispatch) => {
+export const createCategoryThunk = (category, currentPage) => async (dispatch) => {
     try {
       await axios.post("/categories", category);
       const pageUrl = `/categories?page=${currentPage}&limit=10`;

@@ -44,4 +44,11 @@ export class AuthService {
         return {user: userEntity, token: token}
     }
 
+    public async getUser(user: UserEntity){
+
+        const { password, id, role, isDeleted, ...userEntity } = UserEntity.fromObject(user)
+        
+        return userEntity;
+    }
+
 }

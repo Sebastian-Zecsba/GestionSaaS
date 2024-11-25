@@ -46,37 +46,39 @@ const DashboardInventory = ({searchTerm}) => {
       <h2 className="text-3xl font-bold mb-6">Lista del Inventario</h2>
 
         {inventoryFiltered?.length > 0 ? (
-          <table className='w-full table-auto'>
-            <thead>
-              <tr className='text-left'>
-                  <th className='pb-4 w-5/12'>Producto</th>
-                  <th className='pb-4 w-2/12 text-center'>Cantidad - Unidades</th>
-                  <th className='pb-4 w-2/12'>Bodega</th>
-                  <th className='pb-4'>Acciones</th>
-              </tr>
-            </thead>
-            <tbody>
-              {inventoryFiltered.filter(inventory => !inventory.isDeleted)
-                .map((inventory) => (
-                  <tr key={inventory.id} className="border-t hover:bg-slate-50">
-                    <td className="py-3">{!inventory.product.isDeleted 
-                        ? inventory.product?.name 
-                        : <p className='font-semibold text-gray-400'>{inventory.product?.name}</p>}</td>
-                    <td className="py-3 text-center">{inventory?.quantity} </td>
-                    <td className="py-3">{!inventory.warehouse.isDeleted 
-                        ? inventory.warehouse?.name 
-                        : <p className='font-semibold text-gray-400'>{inventory.warehouse?.name}</p>}</td>
-                    <td>
-                    <button
-                      onClick={() => dispatch(deleteInventoryByIdThunk(inventory.id, currentPage))}
-                      className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
-                    >
-                      Eliminar
-                    </button></td>
-                  </tr>
-                ))}
-            </tbody>
-          </table>
+          <div className='overflow-x-auto'>
+            <table className='w-full table-fixed border-collapse'>
+              <thead>
+                <tr className='text-left'>
+                    <th className='pb-4 w-[150px] sm:w-[200px] md:w-3/12 lg:w-3/12 min-w-[150px] sm:min-w-[200px] whitespace-nowrap'>Producto</th>
+                    <th className='pb-4 w-[250px] sm:w-[200px] md:w-4/12 lg:w-[250px] min-w-[150px] sm:min-w-[200px] whitespace-nowrap'>Cantidad - Unidades</th>
+                    <th className='pb-4 w-[150px] sm:w-[200px] md:w-2/12 lg:w-5/12 min-w-[150px] sm:min-w-[200px] whitespace-nowrap'>Bodega</th>
+                    <th className='pb-4 w-[150px]'>Acciones</th>
+                </tr>
+              </thead>
+              <tbody>
+                {inventoryFiltered.filter(inventory => !inventory.isDeleted)
+                  .map((inventory) => (
+                    <tr key={inventory.id} className="border-t hover:bg-slate-50">
+                      <td className="py-3">{!inventory.product.isDeleted 
+                          ? inventory.product?.name 
+                          : <p className='font-semibold text-gray-400'>{inventory.product?.name}</p>}</td>
+                      <td className="py-3">{inventory?.quantity} </td>
+                      <td className="py-3">{!inventory.warehouse.isDeleted 
+                          ? inventory.warehouse?.name 
+                          : <p className='font-semibold text-gray-400'>{inventory.warehouse?.name}</p>}</td>
+                      <td>
+                        <button
+                          onClick={() => dispatch(deleteInventoryByIdThunk(inventory.id, currentPage))}
+                          className="bg-red-500 hover:bg-red-700 text-white px-3 p-1 rounded-[10px]"
+                        >
+                          Eliminar
+                        </button></td>
+                    </tr>
+                  ))}
+              </tbody>
+            </table>
+          </div>
         ) : (
           <div className="flex gap-10 py-4 items-center">
             <ButtonCreate

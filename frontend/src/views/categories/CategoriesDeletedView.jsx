@@ -21,8 +21,8 @@ const CategoriesDeletedView = () => {
             <thead>
               <tr className="text-left">
                 <th className="pb-4 w-3/12">Nombre</th>
-                <th className="pb-4 w-7/12">Descripción</th>
-                <th className="pb-4">Acciones</th>
+                <th className="pb-4 w-3/12">Descripción</th>
+                <th className="pb-4 w-2/12">Acciones</th>
               </tr>
             </thead>
           <tbody>
@@ -32,7 +32,7 @@ const CategoriesDeletedView = () => {
                   <tr key={category.id} className="border-t hover:bg-slate-50">
                     <td className="py-3">{category.name}</td>
                     <td className="py-3">{category.description}</td>
-                    <td className="py-3">
+                    <td className="py-3 flex gap-2">
                       <button
                         onClick={() => dispatch(restoreCategoryById(category.id))}
                         className="bg-orange-400 hover:bg-orange-500 text-white px-3 p-1 rounded-[10px]"

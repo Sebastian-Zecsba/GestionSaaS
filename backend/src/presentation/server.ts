@@ -27,7 +27,16 @@ export class Server {
         //* Middlewares
         this.app.use( express.json() ); // raw
         this.app.use( express.urlencoded({ extended: true }) ); // x-www-form-urlencoded
-        this.app.use( cors() );
+
+        //* CORS Configuration
+        this.app.use(cors());
+        this.app.use((req, res, next) => {
+            res.header('Access-Control-Allow-Origin', '*');
+            res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+            res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+            next();
+        });
+        
         //* Public Folder
         this.app.use( express.static( this.publicPath ) );
     

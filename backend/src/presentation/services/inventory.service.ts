@@ -22,7 +22,7 @@ export class InventoryService{
         try {
             const createInvetory = new InventoryModel({
                 ...inventoryDto,
-                user: user
+                user: user.id
             })
 
             await createInvetory.save()

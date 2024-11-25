@@ -35,4 +35,14 @@ export class AuthController {
             .catch(error => this.handleError(error, res))
     }
 
+    validatetoken = (req: Request, res: Response) => {
+        res.json({ isValid: true, message: 'Token válido' });
+    }
+
+    getUser = (req: Request, res: Response) => {
+        this.authService.getUser(req.body.user!)
+            .then((user) => res.json(user))
+            .catch(error => this.handleError(error, res))
+    }
+
 }
